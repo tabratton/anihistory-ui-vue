@@ -24,9 +24,11 @@
   "messages": {
     "update": "Update",
     "refresh": "Refresh",
-    "directions": "Press Refresh to refresh the page",
-    "user_loading": "User loading, it may take a minute or two to load all data",
-    "not_found": "User not found in Anilist",
-    "unavail": "Service Unavailable"
+    "refresh_directions": "Press Refresh to refresh the page",
+    "user_loading": "User Loading",
+    "loading_disclaimer": "It may take a minute or two to load all data",
+    "not_found": "User Not Found",
+    "unavail": "Service Unavailable",
+    "update_directions": "Press update button below to add user"
   }
 }

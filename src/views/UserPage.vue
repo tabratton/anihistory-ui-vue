@@ -1,25 +1,26 @@
 <template>
   <div class="user-grid">
-    <div class="modal modal-sm" v-bind:class="{ active: modalActive }" id="modal-id">
-      <a @click="clearModal()" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal" v-bind:class="{ active: modalActive }" id="modal-id">
+      <a @click="modalActive = false" class="modal-overlay" aria-label="Close"></a>
       <div class="modal-container">
         <div class="modal-header">
-          <a @click="clearModal()" class="btn btn-clear float-right" aria-label="Close"></a>
+          <a @click="modalActive = false" class="btn btn-clear float-right" aria-label="Close"></a>
           <div class="modal-title h5">{{ message }}</div>
         </div>
         <div class="modal-body">
           <div class="content">
-            {{ $t('messages.directions') }}
+            <p>{{ $t('messages.loading_disclaimer') }}</p>
+            <p>{{ $t('messages.refresh_directions') }}</p>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" @click="refresh()">{{ $t('messages.refresh') }}</button>
+          <button class="btn btn-primary" @click="$router.go()">{{ $t('messages.refresh') }}</button>
         </div>
       </div>
     </div>
     <div v-if="error" class="user empty">
-      <p class="empty-title h5">User not found</p>
-      <p class="empty-subtitle">Press update button below to add user</p>
+      <p class="empty-title h5">{{ message }}</p>
+      <p class="empty-subtitle">{{ $t('messages.update_directions') }}</p>
     </div>
     <div v-if="loading" class="user loading loading-lg"></div>
     <div v-if="model" class="user">
@@ -59,7 +60,7 @@ export default {
   components: {
     Chart
   },
-  data () {
+  data() {
     return {
       loading: false,
       error: false,
@@ -71,14 +72,14 @@ export default {
       modalActive: false
     }
   },
-  created () {
+  created() {
     this.fetchData()
   },
   watch: {
     '$route': 'fetchData'
   },
   methods: {
-    fetchData () {
+    fetchData() {
       this.model = null
       this.loading = true
       this.error = false
@@ -108,14 +109,15 @@ export default {
           this.loading = false
           this.model = list
         },
-        () => {
+        error => {
+          this.message = error.status === 404 ? this.$i18n.t('messages.not_found') : this.$i18n.t('messages.unavail')
           this.loading = false
           this.error = true
         }
       )
     },
 
-    updateUser () {
+    updateUser() {
       this.$http.post(`/users/${this.$route.params.username}`, {
         dataType: 'text'
       }).then(
@@ -128,15 +130,6 @@ export default {
           this.modalActive = true
         }
       )
-    },
-
-    clearModal () {
-      this.modalActive = false
-    },
-
-    refresh () {
-      this.modalActive = false
-      this.$router.go()
     }
   }
 }
