@@ -1,29 +1,64 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <div id='app'>
+    <header class='navbar'>
+      <section class='navbar-section'>
+        <router-link class='navbar-brand text-bold' to='/'>{{ $t ('projectName') }}</router-link>
+      </section>
+      <section class='navbar-section'>
+        <div class='input-group input-inline'>
+          <input type='text' class='form-input' v-model='username' v-on:keypress.enter='goToUser' v-bind:placeholder="$t('navigationBar.username')">
+          <button class='btn btn-primary input-group-btn' v-on:click='goToUser'>{{ $t('navigationBar.search') }}</button>
+        </div>
+      </section>
+    </header>
     <router-view/>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  data() {
+    return {
+      username: ''
+    }
+  },
+  methods: {
+    goToUser() {
+      this.$router.push({
+        name: 'user-page',
+        params: {
+          username: this.username
+        }
+      })
+
+      this.username = ''
     }
   }
 }
+</script>
+
+<style lang='scss'>
+
+$primary-color: #c62125;
+
+@import '~spectre.css/src/spectre';
+
+.navbar {
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#user-update {
+  width: 100%;
+}
+
+.update-btn {
+  margin-top: 1em;
+}
+
+.tab {
+  margin-right: 10px;
+}
+
 </style>
