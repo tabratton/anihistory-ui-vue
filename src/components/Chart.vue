@@ -3,8 +3,20 @@
 </template>
 
 <script>
-import { ColorSet, create, percent, Scrollbar, useTheme } from '@amcharts/amcharts4/core'
-import { CategoryAxis, ColumnSeries, DateAxis, XYChart, XYCursor } from '@amcharts/amcharts4/charts'
+import {
+  ColorSet,
+  create,
+  percent,
+  Scrollbar,
+  useTheme
+} from '@amcharts/amcharts4/core'
+import {
+  CategoryAxis,
+  ColumnSeries,
+  DateAxis,
+  XYChart,
+  XYCursor
+} from '@amcharts/amcharts4/charts'
 import { compareAsc, compareDesc } from 'date-fns'
 
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
@@ -75,7 +87,9 @@ export default {
 
       const series1 = chart.series.push(new ColumnSeries())
       series1.columns.template.width = percent(80)
-      series1.columns.template.tooltipText = `{${this.lang}}: {openDateX} - {dateX}`
+      series1.columns.template.tooltipText = `{${
+        this.lang
+      }}: {openDateX} - {dateX}`
 
       series1.dataFields.openDateX = 'start_day'
       series1.dataFields.dateX = 'end_day'
@@ -110,9 +124,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .chart {
-    grid-area: chart;
-    width: 100%;
-    height: 80vh;
-  }
+.chart {
+  grid-area: chart;
+  width: 100%;
+  height: 80vh;
+}
 </style>

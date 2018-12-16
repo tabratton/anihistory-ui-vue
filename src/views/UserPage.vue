@@ -76,7 +76,7 @@ export default {
     this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     fetchData() {
@@ -95,9 +95,15 @@ export default {
               e.start_day = new Date()
             }
 
-            e[this.$t('chartLanguage.english')] = e.english ? e.english : e['user_title']
-            e[this.$t('chartLanguage.romaji')] = e.romaji ? e.romaji : e['user_title']
-            e[this.$t('chartLanguage.native')] = e.native ? e.native : e['user_title']
+            e[this.$t('chartLanguage.english')] = e.english
+              ? e.english
+              : e['user_title']
+            e[this.$t('chartLanguage.romaji')] = e.romaji
+              ? e.romaji
+              : e['user_title']
+            e[this.$t('chartLanguage.native')] = e.native
+              ? e.native
+              : e['user_title']
             e[this.$t('chartLanguage.user')] = e['user_title']
 
             e.end_day = e.end_day ? parse(e.end_day) : new Date()
@@ -110,7 +116,10 @@ export default {
           this.model = list
         },
         error => {
-          this.message = error.status === 404 ? this.$i18n.t('messages.not_found') : this.$i18n.t('messages.unavail')
+          this.message =
+            error.status === 404
+              ? this.$i18n.t('messages.not_found')
+              : this.$i18n.t('messages.unavail')
           this.loading = false
           this.error = true
         }
@@ -118,80 +127,85 @@ export default {
     },
 
     updateUser() {
-      this.$http.post(`/users/${this.$route.params.username}`, {
-        dataType: 'text'
-      }).then(
-        () => {
-          this.message = this.$i18n.t('messages.user_loading')
-          this.modalActive = true
-        },
-        error => {
-          this.message = error.status === 404 ? this.$i18n.t('messages.not_found') : this.$i18n.t('messages.unavail')
-          this.modalActive = true
-        }
-      )
+      this.$http
+        .post(`/users/${this.$route.params.username}`, {
+          dataType: 'text'
+        })
+        .then(
+          () => {
+            this.message = this.$i18n.t('messages.user_loading')
+            this.modalActive = true
+          },
+          error => {
+            this.message =
+              error.status === 404
+                ? this.$i18n.t('messages.not_found')
+                : this.$i18n.t('messages.unavail')
+            this.modalActive = true
+          }
+        )
     }
   }
 }
 </script>
 
 <style scoped lang='scss'>
-  .user-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.15fr;
-    grid-row-gap: 15px;
-    grid-template-areas: "user" "controls";
-  }
+.user-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 0.15fr;
+  grid-row-gap: 15px;
+  grid-template-areas: 'user' 'controls';
+}
 
-  .user {
-    grid-area: user;
-    height: 100%;
-  }
+.user {
+  grid-area: user;
+  height: 100%;
+}
 
-  .controls {
-    grid-area: controls;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-row-gap: 32px;
-    grid-template-areas: "sort update language" "disclaimer disclaimer disclaimer";
-  }
+.controls {
+  grid-area: controls;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-row-gap: 32px;
+  grid-template-areas: 'sort update language' 'disclaimer disclaimer disclaimer';
+}
 
-  .disclaimer {
-    grid-area: disclaimer;
-    align-self: center;
-    justify-self: center;
-  }
+.disclaimer {
+  grid-area: disclaimer;
+  align-self: center;
+  justify-self: center;
+}
 
-  .update {
-    grid-area: update;
-    align-self: center;
-    justify-self: center;
-  }
+.update {
+  grid-area: update;
+  align-self: center;
+  justify-self: center;
+}
 
-  .sort {
-    grid-area: sort;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-  }
+.sort {
+  grid-area: sort;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
 
-  .select {
-    width: 20%
-  }
+.select {
+  width: 20%;
+}
 
-  .select-title {
-    font-size: 1rem;
-    margin-right: 10px;
-  }
+.select-title {
+  font-size: 1rem;
+  margin-right: 10px;
+}
 
-  .language {
-    grid-area: language;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-  }
+.language {
+  grid-area: language;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
 </style>

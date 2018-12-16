@@ -1,13 +1,22 @@
 <template>
-  <div id='app'>
-    <header class='navbar'>
-      <section class='navbar-section'>
-        <router-link class='navbar-brand text-bold' to='/'>{{ $t ('projectName') }}</router-link>
+  <div id="app">
+    <header class="navbar">
+      <section class="navbar-section">
+        <router-link class="navbar-brand text-bold" to="/">{{ $t ('projectName') }}</router-link>
       </section>
-      <section class='navbar-section'>
-        <div class='input-group input-inline'>
-          <input type='text' class='form-input' v-model='username' v-on:keypress.enter='goToUser' v-bind:placeholder="$t('navigationBar.username')">
-          <button class='btn btn-primary input-group-btn' v-on:click='goToUser'>{{ $t('navigationBar.search') }}</button>
+      <section class="navbar-section">
+        <div class="input-group input-inline">
+          <input
+            type="text"
+            class="form-input"
+            v-model="username"
+            v-on:keypress.enter="goToUser"
+            v-bind:placeholder="$t('navigationBar.username')"
+          >
+          <button
+            class="btn btn-primary input-group-btn"
+            v-on:click="goToUser"
+          >{{ $t('navigationBar.search') }}</button>
         </div>
       </section>
     </header>
@@ -38,7 +47,6 @@ export default {
 </script>
 
 <style lang='scss'>
-
 $primary-color: #c62125;
 
 @import '~spectre.css/src/spectre';
@@ -60,5 +68,4 @@ $primary-color: #c62125;
 .tab {
   margin-right: 10px;
 }
-
 </style>
