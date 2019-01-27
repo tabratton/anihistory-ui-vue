@@ -87,15 +87,15 @@ export default {
 
       const series1 = chart.series.push(new ColumnSeries())
       series1.columns.template.width = percent(80)
-      series1.columns.template.tooltipText = `{${
-        this.lang
-      }}: {openDateX} - {dateX}`
+      series1.columns.template.tooltipText = `{${this.lang}}: {openDateX} - {dateX}`
 
       series1.dataFields.openDateX = 'start_day'
       series1.dataFields.dateX = 'end_day'
       series1.dataFields.categoryY = this.lang
       series1.columns.template.propertyFields.fill = 'color'
       series1.columns.template.propertyFields.stroke = 'color'
+
+      series1.columns.template.events.on('hit', ev => window.open(`https://anilist.co/anime/${ev.target.dataItem.dataContext.id}`, '_blank'), this)
 
       chart.cursor = new XYCursor()
       chart.cursor.lineX.strokeDasharray = ''
