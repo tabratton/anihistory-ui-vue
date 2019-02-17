@@ -45,7 +45,11 @@
       </div>
       <i class="disclaimer text-center">{{ $t('chart.disclaimer') }}</i>
       <div class="update">
-        <button class="btn btn-primary" :class="{ loading: updateUserLoading }" @click="updateUser()">{{ $t('update') }}</button>
+        <button
+          class="btn btn-primary"
+          :class="{ loading: updateUserLoading }"
+          @click="updateUser()"
+        >{{ $t('update') }}</button>
       </div>
     </div>
   </div>
@@ -84,46 +88,48 @@ export default {
       this.loading = true
       this.model = null
       this.error = false
-      this.$http.get(`/users/${this.$route.params.username}`).then(
-        ({ data: { users } }) => {
-          const list = users.list
-          list.forEach(e => {
-            if (e.start_day) {
-              e.start_day = parse(e.start_day)
-            } else if (e.end_day) {
-              e.start_day = subDays(parse(e.end_day), 1)
-            } else {
-              e.start_day = new Date()
-            }
+      this.$http
+        .get(`/users/${this.$route.params.username}`)
+        .then(
+          ({ data: { users } }) => {
+            const list = users.list
+            list.forEach(e => {
+              if (e.start_day) {
+                e.start_day = parse(e.start_day)
+              } else if (e.end_day) {
+                e.start_day = subDays(parse(e.end_day), 1)
+              } else {
+                e.start_day = new Date()
+              }
 
-            e[this.$t('chartLanguage.english')] = e.english
-              ? e.english
-              : e['user_title']
-            e[this.$t('chartLanguage.romaji')] = e.romaji
-              ? e.romaji
-              : e['user_title']
-            e[this.$t('chartLanguage.native')] = e.native
-              ? e.native
-              : e['user_title']
-            e[this.$t('chartLanguage.user')] = e['user_title']
+              e[this.$t('chartLanguage.english')] = e.english
+                ? e.english
+                : e['user_title']
+              e[this.$t('chartLanguage.romaji')] = e.romaji
+                ? e.romaji
+                : e['user_title']
+              e[this.$t('chartLanguage.native')] = e.native
+                ? e.native
+                : e['user_title']
+              e[this.$t('chartLanguage.user')] = e['user_title']
 
-            e.end_day = e.end_day ? parse(e.end_day) : new Date()
-            if (isEqual(e.start_day, e.end_day)) {
-              e.end_day = addDays(e.end_day, 1)
-            }
-          })
+              e.end_day = e.end_day ? parse(e.end_day) : new Date()
+              if (isEqual(e.start_day, e.end_day)) {
+                e.end_day = addDays(e.end_day, 1)
+              }
+            })
 
-          this.model = list
-        },
-        error => {
-          this.message =
-            error.status === 404
-              ? this.$i18n.t('messages.not_found')
-              : this.$i18n.t('messages.unavail')
-          this.error = true
-        }
-      )
-      .finally(() => this.loading = false)
+            this.model = list
+          },
+          error => {
+            this.message =
+              error.status === 404
+                ? this.$i18n.t('messages.not_found')
+                : this.$i18n.t('messages.unavail')
+            this.error = true
+          }
+        )
+        .finally(() => (this.loading = false))
     },
 
     updateUser() {
@@ -145,7 +151,7 @@ export default {
             this.modalActive = true
           }
         )
-        .finally(() => this.updateUserLoading = false)
+        .finally(() => (this.updateUserLoading = false))
     }
   }
 }
