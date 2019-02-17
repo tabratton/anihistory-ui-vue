@@ -124,9 +124,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.chart {
-  grid-area: chart;
-  width: 100%;
-  height: 80vh;
-}
 </style>

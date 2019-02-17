@@ -22,7 +22,7 @@
       <p class="empty-title h5">{{ message }}</p>
       <p class="empty-subtitle">{{ $t('messages.update_directions') }}</p>
     </div>
-    <div v-if="loading" class="user loading loading-lg"></div>
+    <div v-if="loading" class="user chart loading loading-lg"></div>
     <div v-if="model" class="user">
       <Chart v-bind:list="model" v-bind:sort="sort" v-bind:lang="lang"></Chart>
     </div>
@@ -45,7 +45,7 @@
       </div>
       <i class="disclaimer text-center">{{ $t('chart.disclaimer') }}</i>
       <div class="update">
-        <button class="btn btn-primary" @click="updateUser()">{{ $t('update') }}</button>
+        <button class="btn btn-primary" :class="{ loading: updateUserLoading }" @click="updateUser()">{{ $t('update') }}</button>
       </div>
     </div>
   </div>
@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       loading: false,
+      updateUserLoading: false,
       error: false,
       model: true,
       sortingOptions: [this.$t('sorting.desc'), this.$t('sorting.asc')],
@@ -80,8 +81,8 @@ export default {
   },
   methods: {
     fetchData() {
-      this.model = null
       this.loading = true
+      this.model = null
       this.error = false
       this.$http.get(`/users/${this.$route.params.username}`).then(
         ({ data: { users } }) => {
@@ -112,7 +113,6 @@ export default {
             }
           })
 
-          this.loading = false
           this.model = list
         },
         error => {
@@ -120,13 +120,14 @@ export default {
             error.status === 404
               ? this.$i18n.t('messages.not_found')
               : this.$i18n.t('messages.unavail')
-          this.loading = false
           this.error = true
         }
       )
+      .finally(() => this.loading = false)
     },
 
     updateUser() {
+      this.updateUserLoading = true
       this.$http
         .post(`/users/${this.$route.params.username}`, {
           dataType: 'text'
@@ -144,6 +145,7 @@ export default {
             this.modalActive = true
           }
         )
+        .finally(() => this.updateUserLoading = false)
     }
   }
 }
@@ -207,5 +209,10 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+}
+
+.chart {
+  width: 100%;
+  height: 80vh;
 }
 </style>
