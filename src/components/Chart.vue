@@ -107,7 +107,7 @@ export default {
     },
 
     updateValue(destination, newValue) {
-      this[destination + 'Key'] = newValue
+      this[`${destination}Key`] = newValue
     }
   },
 
