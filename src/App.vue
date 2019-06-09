@@ -52,9 +52,15 @@ $primary-color: #c62125;
 @import '~spectre.css/src/spectre';
 
 .navbar {
-  padding-top: 5px;
   padding-left: 10px;
   padding-right: 10px;
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px solid $gray-color;
+}
+
+.navbar-brand {
+  font-family: $mono-font-family;
 }
 
 #user-update {
