@@ -126,4 +126,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .amcharts-XYSeries {
+    .amcharts-Sprite-group .amcharts-Container-group {
+      cursor: pointer;
+    }
+  }
 </style>
