@@ -6,6 +6,7 @@
 import {
   ColorSet,
   create,
+  options,
   percent,
   Scrollbar,
   useTheme
@@ -22,6 +23,7 @@ import { compareAsc, compareDesc } from 'date-fns'
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
 import theme from '@amcharts/amcharts4/themes/spiritedaway'
 
+options.autoSetClassName = true
 useTheme(am4themesAnimated)
 
 const colorSet = new ColorSet()
