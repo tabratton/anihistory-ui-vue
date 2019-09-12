@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { addDays, isEqual, parse, subDays } from 'date-fns'
+import { addDays, isEqual, parseISO, subDays } from 'date-fns'
 
 import Chart from '@/components/Chart.vue'
 
@@ -95,9 +95,9 @@ export default {
             const list = users.list
             list.forEach(e => {
               if (e.start_day) {
-                e.start_day = parse(e.start_day)
+                e.start_day = parseISO(e.start_day)
               } else if (e.end_day) {
-                e.start_day = subDays(parse(e.end_day), 1)
+                e.start_day = subDays(parseISO(e.end_day), 1)
               } else {
                 e.start_day = new Date()
               }
@@ -113,7 +113,7 @@ export default {
                 : e['user_title']
               e[this.$t('chartLanguage.user')] = e['user_title']
 
-              e.end_day = e.end_day ? parse(e.end_day) : new Date()
+              e.end_day = e.end_day ? parseISO(e.end_day) : new Date()
               if (isEqual(e.start_day, e.end_day)) {
                 e.end_day = addDays(e.end_day, 1)
               }
