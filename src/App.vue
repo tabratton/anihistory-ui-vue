@@ -35,9 +35,7 @@ export default {
     goToUser() {
       this.$router.push({
         name: 'user-page',
-        params: {
-          username: this.username
-        }
+        params: { username: this.username }
       })
 
       this.username = ''

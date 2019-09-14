@@ -45,9 +45,7 @@ export default {
         this.chart.invalidateData()
       }
 
-      temp.forEach(e => {
-        e.color = colorSet.next()
-      })
+      temp.forEach(e => (e.color = colorSet.next()))
 
       return temp
     }

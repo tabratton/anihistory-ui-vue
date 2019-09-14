@@ -135,22 +135,18 @@ export default {
     updateUser() {
       this.updateUserLoading = true
       this.$http
-        .post(`/users/${this.$route.params.username}`, {
-          dataType: 'text'
+        .post(`/users/${this.$route.params.username}`, { dataType: 'text' })
+        .then(() => {
+          this.message = this.$i18n.t('messages.user_loading')
+          this.modalActive = true
         })
-        .then(
-          () => {
-            this.message = this.$i18n.t('messages.user_loading')
-            this.modalActive = true
-          },
-          error => {
-            this.message =
-              error.status === 404
-                ? this.$i18n.t('messages.not_found')
-                : this.$i18n.t('messages.unavail')
-            this.modalActive = true
-          }
-        )
+        .catch(error => {
+          this.message =
+            error.status === 404
+              ? this.$i18n.t('messages.not_found')
+              : this.$i18n.t('messages.unavail')
+          this.modalActive = true
+        })
         .finally(() => (this.updateUserLoading = false))
     }
   }
