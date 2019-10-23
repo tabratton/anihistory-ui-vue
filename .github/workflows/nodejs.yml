@@ -42,13 +42,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - uses: borales/actions-yarn@v2.0.1
       with:
-          cmd: install
+        cmd: install
     - uses: borales/actions-yarn@v2.0.1
       with:
         cmd: build
-    - uses: borales/actions-yarn@v2.0.1
-      with:
-        cmd: deploy
+    - name: Clean install dependencies and build
+      run: |
+        yarn deploy
       env:
         CI: true
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
