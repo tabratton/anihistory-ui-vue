@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts4@^4.7.10":
-  version "4.7.10"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.7.10.tgz#a16bf6d0fa525508baf18ddf798ab8d53303d044"
-  integrity sha512-AnadaXLzP5yJ6TlkvA2TtuzqrOsfkU1jjyGdvj6DUReDYML7ytz9qgJo/gpuE+iMdpcTN+GdyvbQDXGNXToQNA==
+"@amcharts/amcharts4@^4.7.11":
+  version "4.7.11"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.7.11.tgz#d52d0f29ac6e8c6a259bfbe85a636aee383edfdc"
+  integrity sha512-gZUN0FZW2kk3Iu06aIy68LcFS6FnJZp2KvhZuhf+mrx/yMdyP0q3e8BrFY7SXn/uduOU1/M3Vdkc+tB0cRCUfg==
   dependencies:
     "@types/regression" "^2.0.0"
     canvg "^2.0.0"
