@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts4@^4.7.13":
-  version "4.7.13"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.7.13.tgz#5783d4ca50b279e6457c57c20e962f766d010004"
-  integrity sha512-QM3oNVgnNPhbHwRoBiuQz+/rkeRv6d4U1Ds0YCKuPm5h6gN9ZxFYNCEl0l4T4p8f2t+MMZYca3uG7BM0ZPbCPg==
+"@amcharts/amcharts4@^4.7.14":
+  version "4.7.14"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.7.14.tgz#9b3735a9180f816a2926e051e237156ba6e231cc"
+  integrity sha512-oHkc1//aaEq6iiATbpE4Y8ojco/iDFm4Rd1bfTGElto5/0cyfCMMwTXoukjkKlKsJoGUYpm14Z2nicT6V0fxlw==
   dependencies:
     "@types/regression" "^2.0.0"
     canvg "^2.0.0"
-    css-element-queries "^1.0.5"
+    css-element-queries "1.2.1"
     d3-force "^2.0.1"
     d3-geo "^1.11.3"
     d3-geo-projection "^2.6.0"
@@ -2915,7 +2915,7 @@ css-declaration-sorter@^4.0.1:
     postcss "^7.0.1"
     timsort "^0.3.0"
 
-css-element-queries@^1.0.5:
+css-element-queries@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.2.1.tgz#70d1a0f676fc0bd0a3306522a5b2d3bcc55c9fe6"
   integrity sha512-hiI1tSzf+U/gE13qhfwnCvN90Ay0THnE+mT3pjN/c/mvFmEUHZVNrvMJrrkw2ppOzkl69FdgH2ZGZENYQUaN2A==
