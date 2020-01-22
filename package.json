@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts4": "^4.7.21",
-    "axios": "^0.19.1",
+    "axios": "^0.19.2",
     "date-fns": "^2.9.0",
     "spectre.css": "0.5.8",
     "vue": "^2.6.11",
