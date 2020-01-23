@@ -9,7 +9,7 @@
     "deploy": "vue-cli-service s3-deploy"
   },
   "dependencies": {
-    "@amcharts/amcharts4": "^4.7.21",
+    "@amcharts/amcharts4": "^4.8.2",
     "axios": "^0.19.2",
     "date-fns": "^2.9.0",
     "spectre.css": "0.5.8",
