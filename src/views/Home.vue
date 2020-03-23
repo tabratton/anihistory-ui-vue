@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
-    <h4 class="text-center">{{ $t('projectName') }}</h4>
-    <p class="text-center text-italic subtitle">{{ $t('subtitle') }}</p>
+  <div class="h-screen flex flex-col items-center justify-center">
+    <h4 class="text-center text-white-o-87">{{ $t('projectName') }}</h4>
+    <p class="text-center text-white-o-87 italic text-sm">{{ $t('subtitle') }}</p>
   </div>
 </template>
 

@@ -4,6 +4,7 @@
 
 <script>
 import {
+  color,
   ColorSet,
   create,
   options,
@@ -21,7 +22,7 @@ import {
 import { compareAsc, compareDesc } from 'date-fns'
 
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
-import theme from '@amcharts/amcharts4/themes/spiritedaway'
+import theme from '@amcharts/amcharts4/themes/moonrisekingdom'
 
 options.autoSetClassName = true
 useTheme(am4themesAnimated)
@@ -35,7 +36,7 @@ export default {
   computed: {
     sortedList() {
       let temp = this.list
-      if (this.sort === 'Ascending') {
+      if (this.sort === 'asc') {
         temp.sort((a, b) => compareAsc(b.start_day, a.start_day))
       } else {
         temp.sort((a, b) => compareDesc(b.start_day, a.start_day))
@@ -73,6 +74,8 @@ export default {
       const categoryAxis = chart.yAxes.push(new CategoryAxis())
       categoryAxis.dataFields.category = this.lang
       categoryAxis.renderer.grid.template.location = 0
+      categoryAxis.renderer.grid.template.strokeOpacity = 0.15
+      categoryAxis.renderer.grid.template.stroke = color('#FFFFFF')
       categoryAxis.renderer.inversed = true
       categoryAxis.renderer.fontSize = 12
       categoryAxis.renderer.labels.template.disabled = true
@@ -84,6 +87,10 @@ export default {
       dateAxis.baseInterval = { count: 1, timeUnit: 'day' }
       dateAxis.tooltipDateFormat = 'yyyy-MM-dd'
       dateAxis.renderer.fontSize = 12
+      dateAxis.renderer.labels.template.fill = color('#FFFFFF')
+      dateAxis.renderer.labels.template.opacity = 0.87
+      dateAxis.renderer.grid.template.strokeOpacity = 0.15
+      dateAxis.renderer.grid.template.stroke = color('#FFFFFF')
 
       const series1 = chart.series.push(new ColumnSeries())
       series1.columns.template.width = percent(80)
@@ -104,10 +111,22 @@ export default {
 
       chart.scrollbarX = new Scrollbar()
       chart.scrollbarY = new Scrollbar()
-    },
 
-    updateValue(destination, newValue) {
-      this[`${destination}Key`] = newValue
+      function customizeGrip(grip) {
+        grip.icon.disabled = true
+        grip.background.fill = color('#bfbfbf')
+        grip.background.fillOpacity = 1
+      }
+
+      chart.scrollbarX.thumb.background.fill = color('#FFFFFF')
+      chart.scrollbarX.thumb.background.fillOpacity = 0.05
+      chart.scrollbarY.thumb.background.fill = color('#FFFFFF')
+      chart.scrollbarY.thumb.background.fillOpacity = 0.05
+
+      customizeGrip(chart.scrollbarX.startGrip)
+      customizeGrip(chart.scrollbarX.endGrip)
+      customizeGrip(chart.scrollbarY.startGrip)
+      customizeGrip(chart.scrollbarY.endGrip)
     }
   },
 
@@ -123,10 +142,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .amcharts-XYSeries {
-    .amcharts-Sprite-group .amcharts-Container-group {
-      cursor: pointer;
-    }
+<style lang="css">
+  .amcharts-XYSeries .amcharts-Sprite-group .amcharts-Container-group {
+    cursor: pointer;
+  }
+
+  .chart {
+    width: 100%;
+    height: 100%;
   }
 </style>

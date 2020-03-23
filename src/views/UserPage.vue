@@ -1,68 +1,53 @@
 <template>
   <div class="user-grid">
-    <div class="modal" v-bind:class="{ active: modalActive }" id="modal-id">
-      <a @click="modalActive = false" class="modal-overlay" aria-label="Close"></a>
-      <div class="modal-container">
-        <div class="modal-header">
-          <a @click="modalActive = false" class="btn btn-clear float-right" aria-label="Close"></a>
-          <div class="modal-title h5">{{ message }}</div>
-        </div>
-        <div class="modal-body">
-          <div class="content">
-            <p>{{ $t('messages.loading_disclaimer') }}</p>
-            <p>{{ $t('messages.refresh_directions') }}</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" @click="$router.go()">{{ $t('messages.refresh') }}</button>
-        </div>
-      </div>
+    <div v-if="error" class="user">
+      <p class="text-center text-lg font-bold text-white-o-87">{{ message }}</p>
+      <p class="text-center text-white-o-87 text-sm">{{ $t('messages.update_directions') }}</p>
     </div>
-    <div v-if="error" class="user empty">
-      <p class="empty-title h5">{{ message }}</p>
-      <p class="empty-subtitle">{{ $t('messages.update_directions') }}</p>
+    <div v-if="loading" class="user flex items-center">
+      <Loading></Loading>
     </div>
-    <div v-if="loading" class="user chart loading loading-lg"></div>
     <div v-if="model" class="user">
       <Chart v-bind:list="model" v-bind:sort="sort" v-bind:lang="lang"></Chart>
     </div>
     <div class="controls">
       <div class="sort">
-        <label for="sort-select" class="select-title">{{ $t('sorting.title') }}</label>
-        <select class="select form-select" id="sort-select" v-model="sort">
-          <option>{{ $t('sorting.desc') }}</option>
-          <option>{{ $t('sorting.asc') }}</option>
-        </select>
+        <label for="sort-select" class="mb-1 text-white-o-87">{{ $t('sorting.title') }}</label>
+        <CustomSelect id="sort-select" v-bind:items="sortOptions" v-bind:onChange="updateSort"></CustomSelect>
       </div>
       <div class="language">
-        <label for="lang-select" class="select-title">{{ $t('chartLanguage.title') }}</label>
-        <select class="select form-select" id="lang-select" v-model="lang">
-          <option>{{ $t('chartLanguage.user') }}</option>
-          <option>{{ $t('chartLanguage.english') }}</option>
-          <option>{{ $t('chartLanguage.romaji') }}</option>
-          <option>{{ $t('chartLanguage.native') }}</option>
-        </select>
+        <label for="lang-select" class="mb-1 text-white-o-87">{{ $t('chartLanguage.title') }}</label>
+        <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
       </div>
-      <i class="disclaimer text-center">{{ $t('chart.disclaimer') }}</i>
+      <em class="disclaimer text-white-o-87 text-center">{{ $t('chart.disclaimer') }}</em>
       <div class="update">
         <button
-          class="btn btn-primary"
+          class="hover:bg-purple-200 hover:text-purple-600 text-purple-500 font-bold py-2 px-3 rounded focus:outline-none border border-solid border-purple-500"
           :class="{ loading: updateUserLoading }"
           @click="updateUser()"
         >{{ $t('update') }}</button>
       </div>
     </div>
+
+    <UpdateModal v-if="modalActive" v-bind:message="message" v-on:close="modalActive = false"></UpdateModal>
+
   </div>
 </template>
 
 <script>
 import { addDays, isEqual, parseISO, subDays } from 'date-fns'
 
-import Chart from '@/components/Chart.vue'
+import Chart from '@/components/Chart'
+import CustomSelect from '@/components/CustomSelect'
+import Loading from '@/components/Loading'
+import UpdateModal from '@/components/UpdateModal'
 
 export default {
   components: {
-    Chart
+    Chart,
+    CustomSelect,
+    Loading,
+    UpdateModal
   },
   data() {
     return {
@@ -70,7 +55,34 @@ export default {
       updateUserLoading: false,
       error: false,
       model: true,
-      sortingOptions: [this.$t('sorting.desc'), this.$t('sorting.asc')],
+      sortOptions: [
+        {
+          value: 'desc',
+          message: this.$t('sorting.desc')
+        },
+        {
+          value: 'asc',
+          message: this.$t('sorting.asc')
+        }
+      ],
+      langOptions: [
+        {
+          value: 'user',
+          message: this.$t('chartLanguage.user')
+        },
+        {
+          value: 'english',
+          message: this.$t('chartLanguage.english')
+        },
+        {
+          value: 'romaji',
+          message: this.$t('chartLanguage.romaji')
+        },
+        {
+          value: 'native',
+          message: this.$t('chartLanguage.native')
+        }
+      ],
       sort: this.$t('sorting.desc'),
       lang: this.$t('chartLanguage.user'),
       message: null,
@@ -84,6 +96,12 @@ export default {
     $route: 'fetchData'
   },
   methods: {
+    updateSort(val) {
+      this.sort = val
+    },
+    updateLang(val) {
+      this.lang = val
+    },
     fetchData() {
       this.loading = true
       this.model = null
@@ -153,13 +171,13 @@ export default {
 }
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang='css'>
 .user-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 0.15fr;
+  grid: 'user' 1fr
+        'controls' 0.15fr /
+        1fr;
   grid-row-gap: 15px;
-  grid-template-areas: 'user' 'controls';
 }
 
 .user {
@@ -170,10 +188,10 @@ export default {
 .controls {
   grid-area: controls;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid: 'sort       update     language' 1fr
+        'disclaimer disclaimer disclaimer' 1fr /
+        1fr         1fr        1fr;
   grid-row-gap: 32px;
-  grid-template-areas: 'sort update language' 'disclaimer disclaimer disclaimer';
 }
 
 .disclaimer {
@@ -191,30 +209,14 @@ export default {
 .sort {
   grid-area: sort;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-}
-
-.select {
-  width: 20%;
-}
-
-.select-title {
-  font-size: 1rem;
-  margin-right: 10px;
 }
 
 .language {
   grid-area: language;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-}
-
-.chart {
-  width: 100%;
-  height: 80vh;
 }
 </style>
