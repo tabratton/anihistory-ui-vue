@@ -23,8 +23,7 @@ module.exports = {
       colors: {
         'white-o-87': 'rgba(255, 255, 255, 0.87)',
         black: '#121212',
-        'black-light': 'rgba(255, 255, 255, 0.05)',
-        'black-lighter': 'rgba(255, 255, 255, 0.07)'
+        'elevation-1': 'rgba(255, 255, 255, 0.05)'
       },
       spacing: {
         18: '4.5rem'

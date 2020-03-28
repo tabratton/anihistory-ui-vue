@@ -11,18 +11,18 @@
       <Chart v-bind:list="model" v-bind:sort="sort" v-bind:lang="lang"></Chart>
     </div>
     <div class="controls">
-      <div class="sort">
+      <div class="sort text-center flex flex-col">
         <label for="sort-select" class="mb-1 text-white-o-87">{{ $t('sorting.title') }}</label>
         <CustomSelect id="sort-select" v-bind:items="sortOptions" v-bind:onChange="updateSort"></CustomSelect>
       </div>
-      <div class="language">
+      <div class="language text-center flex flex-col">
         <label for="lang-select" class="mb-1 text-white-o-87">{{ $t('chartLanguage.title') }}</label>
         <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
       </div>
       <em class="disclaimer text-white-o-87 text-center">{{ $t('chart.disclaimer') }}</em>
       <div class="update">
         <button
-          class="hover:bg-purple-200 hover:text-purple-600 text-purple-500 font-bold py-2 px-3 rounded focus:outline-none border border-solid border-purple-500"
+          class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-3 rounded focus:outline-none"
           :class="{ loading: updateUserLoading }"
           @click="updateUser()"
         >{{ $t('update') }}</button>
@@ -177,7 +177,7 @@ export default {
   grid: 'user' 1fr
         'controls' 0.15fr /
         1fr;
-  grid-row-gap: 15px;
+  grid-row-gap: 8px;
 }
 
 .user {
@@ -189,34 +189,26 @@ export default {
   grid-area: controls;
   display: grid;
   grid: 'sort       update     language' 1fr
-        'disclaimer disclaimer disclaimer' 1fr /
+        'disclaimer disclaimer disclaimer' 0.75fr /
         1fr         1fr        1fr;
-  grid-row-gap: 32px;
+  grid-row-gap: 8px;
+  align-items: center;
+  justify-items: center;
 }
 
 .disclaimer {
   grid-area: disclaimer;
-  align-self: center;
-  justify-self: center;
 }
 
 .update {
   grid-area: update;
-  align-self: center;
-  justify-self: center;
 }
 
 .sort {
   grid-area: sort;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .language {
   grid-area: language;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 </style>
