@@ -30,14 +30,14 @@ jobs:
       if: success()
       with:
         hueWebhook: ${{ secrets.HUEACTION_WEBHOOK }}
-        hueLightId: "5"
+        hueLightId: "8"
         hueStatus: "success"
     - name: Run Hue Action
       uses: manekinekko/hue-action@v1.0
       if: failure()
       with:
         hueWebhook: ${{ secrets.HUEACTION_WEBHOOK }}
-        hueLightId: "5"
+        hueLightId: "8"
         hueStatus: "failure"
   deploy:
     needs: build
