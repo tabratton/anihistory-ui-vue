@@ -37,7 +37,7 @@ export default {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #d6bcfa;
+  background: #DD6B20;
   margin: -4px 0 0 -4px;
 }
 

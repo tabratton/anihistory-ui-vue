@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
 .main {
   display: grid;
   grid: 'nav' 6vh

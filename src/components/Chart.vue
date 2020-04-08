@@ -127,6 +127,10 @@ export default {
       customizeGrip(chart.scrollbarX.endGrip)
       customizeGrip(chart.scrollbarY.startGrip)
       customizeGrip(chart.scrollbarY.endGrip)
+
+      chart.zoomOutButton.background.fill = color('#DD6B20')
+      chart.zoomOutButton.icon.stroke = color('#EFD9CE')
+      chart.zoomOutButton.background.states.getKey('hover').properties.fill = color('#ED8936')
     }
   },
 
@@ -142,7 +146,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
   .amcharts-XYSeries .amcharts-Sprite-group .amcharts-Container-group {
     cursor: pointer;
   }

@@ -13,13 +13,13 @@
 export default {
   name: 'CustomSelect',
   props: ['items', 'id', 'onChange'],
-  data: function() {
+  data() {
     return {
       selected: this.items[0].value
     }
   },
   watch: {
-    selected: function(val) {
+    selected(val) {
       this.onChange(val)
     }
   }
