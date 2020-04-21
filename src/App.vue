@@ -5,7 +5,7 @@
       <section class="flex flex-no-wrap items-center">
         <input
           type="text"
-          class="shadow appearance-none rounded w-full py-2 px-3 text-white-o-87 bg-black leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none rounded-full w-full py-2 px-3 text-white-o-87 bg-black leading-tight focus:outline-none focus:shadow-outline"
           v-model="username"
           v-on:keypress.enter="goToUser"
           v-bind:placeholder="$t('navigationBar.username')"
@@ -33,8 +33,6 @@ export default {
         name: 'user-page',
         params: { username: this.username }
       })
-
-      this.username = ''
     }
   }
 }
