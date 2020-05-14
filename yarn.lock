@@ -2,14 +2,13 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts4@^4.9.17":
-  version "4.9.17"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.9.17.tgz#9a2d2176323a0337adea0070d8a337b263b95e13"
-  integrity sha512-6D5g3mjnLZ5tevGsA/ZLKLpFK0coAZy4YWtfJ23JniqO4a7fZ/gdQ6OzSyZZpmjZk70lMxU/7wlTfTJMUrvJ2Q==
+"@amcharts/amcharts4@^4.9.21":
+  version "4.9.21"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.9.21.tgz#d196bc0fe5864f0e754ccaccbd21c0e29bd73528"
+  integrity sha512-0WDesL8nsfFdb1fp6OrfXA761qoaSou/J3w6e+ANLrQMeaHq2T2JlDEJpOUEe/7+IfLaGrkqGRKnkJQqS5jGAg==
   dependencies:
     "@types/regression" "^2.0.0"
-    canvg "^3.0.0"
-    css-element-queries "1.2.1"
+    canvg "3.0.0"
     d3-force "^2.0.1"
     d3-geo "^1.11.3"
     d3-geo-projection "^2.6.0"
@@ -2450,10 +2449,10 @@ caniuse-lite@^1.0.30001038, caniuse-lite@^1.0.30001039:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001039.tgz#b3814a1c38ffeb23567f8323500c09526a577bbe"
   integrity sha512-SezbWCTT34eyFoWHgx8UWso7YtvtM7oosmFoXbCkdC6qJzRfBTeTgE9REtKtiuKXuMwWTZEvdnFNGAyVMorv8Q==
 
-canvg@^3.0.0:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/canvg/-/canvg-3.0.6.tgz#4f82a34acc433daa06c494fc255420cbbb05f903"
-  integrity sha512-eFUy8R/4DgocR93LF8lr+YUxW4PYblUe/Q1gz2osk/cI5n8AsYdassvln0D9QPhLXQ6Lx7l8hwtT8FLvOn2Ihg==
+canvg@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/canvg/-/canvg-3.0.0.tgz#50e7755c8a1d7142a85b5517cdbbffa20124df4f"
+  integrity sha512-X8YPF3OvcRCCiPUHQHqxrhXf8z5K9Rn8E867m/wx14FYdTNWC5hgYrvUz+Z5LLRni3gyB791Cb0PJ6BptgWX2A==
   dependencies:
     "@babel/runtime" "^7.6.3"
     "@types/raf" "^3.4.0"
@@ -3100,11 +3099,6 @@ css-declaration-sorter@^4.0.1:
   dependencies:
     postcss "^7.0.1"
     timsort "^0.3.0"
-
-css-element-queries@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.2.1.tgz#70d1a0f676fc0bd0a3306522a5b2d3bcc55c9fe6"
-  integrity sha512-hiI1tSzf+U/gE13qhfwnCvN90Ay0THnE+mT3pjN/c/mvFmEUHZVNrvMJrrkw2ppOzkl69FdgH2ZGZENYQUaN2A==
 
 css-loader@^3.4.2:
   version "3.4.2"
