@@ -22,7 +22,8 @@ module.exports = {
       enableCloudfront: true,
       cloudfrontId: 'E3RJ815PE513Z4',
       cloudfrontMatchers: '/*',
-      uploadConcurrency: 5
+      uploadConcurrency: 5,
+      pluginVersion: '3.0.0'
     }
   },
   configureWebpack: config => {
