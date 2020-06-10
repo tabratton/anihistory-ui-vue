@@ -7,15 +7,22 @@ module.exports = {
       enableInSFC: false
     },
     s3Deploy: {
+      awsProfile: 'default',
       region: 'us-east-1',
       bucket: 'anihistory.moe',
+      createBucket: false,
       staticHosting: true,
       staticIndexPage: 'index.html',
       staticErrorPage: 'index.html',
+      assetPath: 'dist',
+      assetMatch: '**',
+      deployPath: '/',
+      acl: 'public-read',
+      pwa: false,
       enableCloudfront: true,
       cloudfrontId: 'E3RJ815PE513Z4',
-      uploadConcurrency: 5,
-      gzip: true
+      cloudfrontMatchers: '/*',
+      uploadConcurrency: 5
     }
   },
   configureWebpack: config => {
