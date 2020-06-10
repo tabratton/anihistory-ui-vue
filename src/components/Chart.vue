@@ -35,7 +35,7 @@ export default {
   props: ['list', 'sort', 'lang'],
   computed: {
     sortedList() {
-      let temp = this.list
+      const temp = this.list
       if (this.sort === 'asc') {
         temp.sort((a, b) => compareAsc(b.start_day, a.start_day))
       } else {
@@ -65,7 +65,7 @@ export default {
         this.chart.dispose()
       }
 
-      let chart = create(this.$refs.chartdiv, XYChart)
+      const chart = create(this.$refs.chartdiv, XYChart)
 
       chart.data = this.sortedList
       chart.paddingRight = 30
