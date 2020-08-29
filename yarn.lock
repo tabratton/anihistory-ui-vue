@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts4@^4.9.30":
-  version "4.9.30"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.9.30.tgz#d6b36372c91aa15fe920ab96a67135d2dc53633c"
-  integrity sha512-5W4AZejB0h6aMNVpfCv9QszMb0qphFQLbBKh0gjLtbUGUE5mIkqjuAYOuroALaHuzsq2WvJ/Fwr3ZRVQvSyNNQ==
+"@amcharts/amcharts4@^4.9.37":
+  version "4.9.37"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.9.37.tgz#ea97c265450bee0c1b71e362f11dccc754847b89"
+  integrity sha512-sGBQqSuwHMQfvyTnEvgdT3QoaFanzCzGDoAnjiqoF4TnRkv7Y5M4USqEOOFP5rOs7VVSIJD5h23gvp6/SBvB3Q==
   dependencies:
     "@babel/runtime" "^7.6.3"
     "@types/regression" "^2.0.0"
@@ -21,7 +21,7 @@
     stackblur-canvas "^2.0.0"
     tslib "^1.9.3"
     venn.js "^0.2.20"
-    xlsx "^0.15.4"
+    xlsx "^0.16.4"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1":
   version "7.10.1"
@@ -8338,10 +8338,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-ssf@~0.10.3:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/ssf/-/ssf-0.10.3.tgz#8eae1fc29c90a552e7921208f81892d6f77acb2b"
-  integrity sha512-pRuUdW0WwyB2doSqqjWyzwCD6PkfxpHAHdZp39K3dp/Hq7f+xfMwNAWIi16DyrRg4gg9c/RvLYkJTSawTPTm1w==
+ssf@~0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/ssf/-/ssf-0.11.2.tgz#0b99698b237548d088fc43cdf2b70c1a7512c06c"
+  integrity sha512-+idbmIXoYET47hH+d7dfm2epdOMUDjqcB4648sTZ+t2JwoyBFL/insLfB/racrDmsKB3diwsDA696pZMieAC5g==
   dependencies:
     frac "~1.1.2"
 
@@ -9613,6 +9613,11 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
+word@~0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/word/-/word-0.3.0.tgz#8542157e4f8e849f4a363a288992d47612db9961"
+  integrity sha512-OELeY0Q61OXpdUfTp+oweA/vtLVg5VDOXh+3he3PNzLGG/y0oylSOC1xRVj0+l4vQ3tj/bB1HVHv1ocXkQceFA==
+
 wordwrap@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
@@ -9662,10 +9667,10 @@ ws@^6.0.0, ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-xlsx@^0.15.4:
-  version "0.15.6"
-  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.15.6.tgz#461f841d6d9ea1a8375e2cd246bf23aece08a1d5"
-  integrity sha512-7vD9eutyLs65iDjNFimVN+gk/oDkfkCgpQUjdE82QgzJCrBHC4bGPH7fzKVyy0UPp3gyFVQTQEFJaWaAvZCShQ==
+xlsx@^0.16.4:
+  version "0.16.6"
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.16.6.tgz#ec759df166cbfe5fdf01d08636a6796db26af9a3"
+  integrity sha512-iAPNt15C2umCx7Q6h9owZvNHRYVOImLp7Mc00uA4UhJvzjfM1OV3V7TgBXIHuawGF1G6GLXZr/r75e5jsiBefg==
   dependencies:
     adler-32 "~1.2.0"
     cfb "^1.1.4"
@@ -9673,8 +9678,9 @@ xlsx@^0.15.4:
     commander "~2.17.1"
     crc-32 "~1.2.0"
     exit-on-epipe "~1.0.1"
-    ssf "~0.10.3"
+    ssf "~0.11.2"
     wmf "~1.0.1"
+    word "~0.3.0"
 
 xml2js@0.4.19:
   version "0.4.19"
