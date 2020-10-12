@@ -11,7 +11,7 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.7",
     "axios": "^0.19.2",
-    "date-fns": "^2.16.0",
+    "date-fns": "^2.16.1",
     "vue": "^2.6.11",
     "vue-i18n": "^8.21.0",
     "vue-router": "^3.4.3"
