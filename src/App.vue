@@ -41,8 +41,8 @@ export default {
 <style scoped lang="css">
 .main {
   display: grid;
-  grid: 'nav' 6vh
-        'content' 94vh /
+  grid: 'nav' 80px
+        'content' calc(100vh - 80px) /
         1fr;
 }
 
@@ -56,6 +56,7 @@ export default {
   grid-area: content;
   align-self: stretch;
   justify-self: stretch;
+  height: 100%;
 }
 
 body.modal-active {
