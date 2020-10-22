@@ -104,38 +104,39 @@ export default {
     },
 
     createGroupCategories(list) {
-      const columns = [[]]
+      const rows = [[]]
 
-      list.forEach(e => {
-        columns.forEach((column, index) => {
-          if (e.category) return
+      list.forEach(listElement => {
+        // Check each row for each list element to make sure all possible gaps are filled
+        rows.forEach((row, index) => {
+          if (listElement.category) return
 
-          const length = column.length
+          const length = row.length
 
+          // If there's no other elements there can't be date range conflicts
           if (length === 0) {
-            e.category = `${index}`
-            column.push(e)
+            listElement.category = `${index}`
+            row.push(listElement)
             return
           }
 
-          const lastElement = column[length - 1]
-          const overlapsWithLastItem = areIntervalsOverlapping({ start: lastElement.start_day, end: lastElement.end_day }, { start: e.start_day, end: e.end_day })
+          // Find out if there are any elements that have date range conflicts in this row
+          const conflictInRow = row
+            .map(rowElement => areIntervalsOverlapping({ start: rowElement.start_day, end: rowElement.end_day }, { start: listElement.start_day, end: listElement.end_day }))
+            .reduce((a, b) => a || b)
 
-          if (overlapsWithLastItem) {
-            if (!columns[index + 1]) {
-              e.category = `${index}`
-              columns.push([e])
-            }
-
-            return
+          // If no conflicts, add the current element to the row,
+          // otherwise add a new row if this is the last row
+          if (!conflictInRow) {
+            listElement.category = `${index}`
+            row.push(listElement)
+          } else if (!rows[index + 1]) {
+            rows.push([])
           }
-
-          e.category = `${index}`
-          column.push(e)
         })
       })
 
-      return columns
+      return rows
     },
 
     fetchData() {
