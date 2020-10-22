@@ -196,7 +196,7 @@ export default {
           }
 
           this.error = true
-          console.error(error)
+          // console.error(error)
         })
         .finally(() => (this.loading = false))
     },
