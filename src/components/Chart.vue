@@ -72,7 +72,7 @@ export default {
       chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd'
 
       const categoryAxis = chart.yAxes.push(new CategoryAxis())
-      categoryAxis.dataFields.category = this.lang
+      categoryAxis.dataFields.category = 'category'
       categoryAxis.renderer.grid.template.location = 0
       categoryAxis.renderer.grid.template.strokeOpacity = 0.15
       categoryAxis.renderer.grid.template.stroke = color('#FFFFFF')
@@ -98,7 +98,7 @@ export default {
 
       series1.dataFields.openDateX = 'start_day'
       series1.dataFields.dateX = 'end_day'
-      series1.dataFields.categoryY = this.lang
+      series1.dataFields.categoryY = 'category'
       series1.columns.template.propertyFields.fill = 'color'
       series1.columns.template.propertyFields.stroke = 'color'
 

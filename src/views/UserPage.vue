@@ -1,6 +1,6 @@
 <template>
   <div class="user-grid">
-    <div v-if="error" class="user">
+    <div v-if="error" class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded">
       <p class="text-center text-lg font-bold text-white-o-87">{{ message }}</p>
       <p class="text-center text-white-o-87 text-sm">{{ $t('messages.update_directions') }}</p>
     </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { addDays, isEqual, parseISO, subDays } from 'date-fns'
+import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isEqual, formatISO, parseISO, subDays } from 'date-fns'
 
 import Chart from '@/components/Chart'
 import CustomSelect from '@/components/CustomSelect'
@@ -102,6 +102,43 @@ export default {
     updateLang(val) {
       this.lang = val
     },
+
+    createGroupCategories(list) {
+      const columns = [[]]
+
+      list.forEach(e => {
+        console.log(e)
+        columns.forEach((column, index) => {
+          if (e.category) return
+
+          const length = column.length
+
+          if (length === 0) {
+            e.category = `${index}`
+            column.push(e)
+            return
+          }
+
+          const lastElement = column[length - 1]
+          const overlapsWithLastItem = areIntervalsOverlapping({ start: lastElement.start_day, end: lastElement.end_day }, { start: e.start_day, end: e.end_day })
+
+          if (overlapsWithLastItem) {
+            if (!columns[index + 1]) {
+              e.category = `${index}`
+              columns.push([e])
+            }
+
+            return
+          }
+
+          e.category = `${index}`
+          column.push(e)
+        })
+      })
+
+      return columns
+    },
+
     fetchData() {
       this.loading = true
       this.model = null
@@ -134,16 +171,32 @@ export default {
             if (isEqual(e.start_day, e.end_day)) {
               e.end_day = addDays(e.end_day, 1)
             }
+
+            if (isBefore(e.end_day, e.start_day)) {
+              // TODO: Add <a> link to anilist page to update date range.
+              // update template to display contextual secondary message
+              // implement irish translation
+              const error = new Error(this.$i18n.t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
+              error.name = 42
+              throw error
+            }
           })
+
+          this.createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
 
           this.model = list
         })
         .catch(error => {
-          this.message =
-            error.status === 404
-              ? this.$i18n.t('messages.not_found')
-              : this.$i18n.t('messages.unavail')
+          if (error.status === 404) {
+            this.message = this.$i18n.t('messages.not_found')
+          } else if (error.name === 42) {
+            this.message = error.message
+          } else {
+            this.message = this.$i18n.t('messages.unavail')
+          }
+
           this.error = true
+          console.error(error)
         })
         .finally(() => (this.loading = false))
     },
@@ -180,7 +233,6 @@ export default {
 
 .user {
   grid-area: user;
-  height: 100%;
 }
 
 .controls {

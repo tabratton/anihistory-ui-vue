@@ -2,7 +2,7 @@
   <div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
     <div id="modal-overlay" class="absolute w-full h-full bg-gray-900 opacity-70"></div>
 
-    <div id="modal-container" class="bg-black w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+    <div id="modal-container" class="bg-black m-6 rounded shadow-lg z-50 overflow-y-auto">
 
       <!-- Add margin if you want to see some of the overlay behind the modal-->
       <div id="modal-content" class="text-left">
