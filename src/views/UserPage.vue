@@ -107,7 +107,6 @@ export default {
       const columns = [[]]
 
       list.forEach(e => {
-        console.log(e)
         columns.forEach((column, index) => {
           if (e.category) return
 
