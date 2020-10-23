@@ -19,10 +19,9 @@ import {
   XYChart,
   XYCursor
 } from '@amcharts/amcharts4/charts'
-import { compareAsc, compareDesc } from 'date-fns'
 
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
-import theme from '@amcharts/amcharts4/themes/moonrisekingdom'
+import theme from '@amcharts/amcharts4/themes/spiritedaway'
 
 options.autoSetClassName = true
 useTheme(am4themesAnimated)
@@ -34,27 +33,12 @@ export default {
   name: 'Chart',
   props: ['list', 'sort', 'lang'],
   computed: {
-    sortedList() {
-      const temp = this.list
-      if (this.sort === 'asc') {
-        temp.sort((a, b) => compareAsc(b.start_day, a.start_day))
-      } else {
-        temp.sort((a, b) => compareDesc(b.start_day, a.start_day))
-      }
-
-      if (this.chart) {
-        this.chart.invalidateData()
-      }
-
-      temp.forEach(e => (e.color = colorSet.next()))
-
-      return temp
+    mappedData() {
+      this.list.forEach(e => (e.color = colorSet.next()))
+      return this.list
     }
   },
   watch: {
-    sort() {
-      this.createChart()
-    },
     lang() {
       this.createChart()
     }
@@ -67,7 +51,7 @@ export default {
 
       const chart = create(this.$refs.chartdiv, XYChart)
 
-      chart.data = this.sortedList
+      chart.data = this.mappedData
       chart.paddingRight = 30
       chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd'
 

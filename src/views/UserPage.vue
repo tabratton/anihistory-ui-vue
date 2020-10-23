@@ -8,13 +8,9 @@
       <Loading></Loading>
     </div>
     <div v-if="model" class="user">
-      <Chart v-bind:list="model" v-bind:sort="sort" v-bind:lang="lang"></Chart>
+      <Chart v-bind:list="model" v-bind:lang="lang"></Chart>
     </div>
     <div class="controls">
-      <div class="sort text-center flex flex-col">
-        <label for="sort-select" class="mb-1 text-white-o-87">{{ $t('sorting.title') }}</label>
-        <CustomSelect id="sort-select" v-bind:items="sortOptions" v-bind:onChange="updateSort"></CustomSelect>
-      </div>
       <div class="language text-center flex flex-col">
         <label for="lang-select" class="mb-1 text-white-o-87">{{ $t('chartLanguage.title') }}</label>
         <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
@@ -55,16 +51,6 @@ export default {
       updateUserLoading: false,
       error: false,
       model: true,
-      sortOptions: [
-        {
-          value: 'desc',
-          message: this.$t('sorting.desc')
-        },
-        {
-          value: 'asc',
-          message: this.$t('sorting.asc')
-        }
-      ],
       langOptions: [
         {
           value: 'user',
@@ -83,7 +69,6 @@ export default {
           message: this.$t('chartLanguage.native')
         }
       ],
-      sort: this.$t('sorting.desc'),
       lang: this.$t('chartLanguage.user'),
       message: null,
       modalActive: false
@@ -96,9 +81,6 @@ export default {
     $route: 'fetchData'
   },
   methods: {
-    updateSort(val) {
-      this.sort = val
-    },
     updateLang(val) {
       this.lang = val
     },
