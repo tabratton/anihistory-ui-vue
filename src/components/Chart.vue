@@ -130,7 +130,7 @@ export default {
 }
 </script>
 
-<style scoped lang="css">
+<style lang="css">
   .amcharts-XYSeries .amcharts-Sprite-group .amcharts-Container-group {
     cursor: pointer;
   }
