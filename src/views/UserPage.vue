@@ -2,7 +2,9 @@
   <div class="user-grid">
     <div v-if="error" class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded">
       <p class="text-center text-lg font-bold text-white-o-87">{{ message }}</p>
-      <p class="text-center text-white-o-87 text-sm">{{ $t('messages.update_directions') }}</p>
+      <p class="text-center text-white-o-87 text-sm" v-if="errorType === 'NotFound'">{{ $t('messages.update_directions') }}</p>
+      <p class="text-center text-white-o-87 text-sm m-2" v-for="err in errorList" :key="err.message">{{ err.message }}</p>
+      <a class="text-orange-600 text-sm" :href="animeListUrl" target="_blank">{{ $t('messages.anilist_instructions') }}</a>
     </div>
     <div v-if="loading" class="user flex items-center">
       <Loading></Loading>
@@ -25,7 +27,7 @@
       </div>
     </div>
 
-    <UpdateModal v-if="modalActive" v-bind:message="message" v-on:close="modalActive = false"></UpdateModal>
+    <UpdateModal v-if="modalActive" v-on:close="modalActive = false"></UpdateModal>
 
   </div>
 </template>
@@ -50,6 +52,8 @@ export default {
       loading: false,
       updateUserLoading: false,
       error: false,
+      errorType: null,
+      errorList: null,
       model: true,
       langOptions: [
         {
@@ -72,6 +76,11 @@ export default {
       lang: this.$t('chartLanguage.user'),
       message: null,
       modalActive: false
+    }
+  },
+  computed: {
+    animeListUrl() {
+      return `https://anilist.co/user/${this.$route.params.username}/animelist`
     }
   },
   created() {
@@ -125,10 +134,14 @@ export default {
       this.loading = true
       this.model = null
       this.error = false
+      this.errorType = null
+      this.errorList = null
       this.$http
         .get(`/users/${this.$route.params.username}`)
         .then(({ data: { users } }) => {
           const list = users.list
+          const dateRangeErrors = []
+
           list.forEach(e => {
             if (e.start_day) {
               e.start_day = parseISO(e.start_day)
@@ -138,16 +151,16 @@ export default {
               e.start_day = new Date()
             }
 
-            e[this.$t('chartLanguage.english')] = e.english
+            e.english = e.english
               ? e.english
               : e.user_title
-            e[this.$t('chartLanguage.romaji')] = e.romaji
+            e.romaji = e.romaji
               ? e.romaji
               : e.user_title
-            e[this.$t('chartLanguage.native')] = e.native
+            e.native = e.native
               ? e.native
               : e.user_title
-            e[this.$t('chartLanguage.user')] = e.user_title
+            e.user = e.user_title
 
             e.end_day = e.end_day ? parseISO(e.end_day) : new Date()
             if (isEqual(e.start_day, e.end_day)) {
@@ -155,30 +168,33 @@ export default {
             }
 
             if (isBefore(e.end_day, e.start_day)) {
-              // TODO: Add <a> link to anilist page to update date range.
-              // update template to display contextual secondary message
-              // implement irish translation
               const error = new Error(this.$i18n.t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
               error.name = 42
-              throw error
+              dateRangeErrors.push(error)
             }
           })
 
-          this.createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
+          if (dateRangeErrors.length > 0) {
+            this.errorList = dateRangeErrors
+            throw dateRangeErrors[0]
+          }
 
+          this.createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
           this.model = list
         })
         .catch(error => {
-          if (error.status === 404) {
+          if (error.response && error.response.status === 404) {
             this.message = this.$i18n.t('messages.not_found')
+            this.errorType = 'NotFound'
           } else if (error.name === 42) {
-            this.message = error.message
+            this.message = this.$i18n.t('messages.date_range')
+            this.errorType = 'DateRange'
           } else {
+            this.errorType = 'Other'
             this.message = this.$i18n.t('messages.unavail')
           }
 
           this.error = true
-          // console.error(error)
         })
         .finally(() => (this.loading = false))
     },

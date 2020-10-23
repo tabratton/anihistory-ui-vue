@@ -9,11 +9,6 @@
   "chart": {
     "disclaimer": "Note: Entries that have the same day as the start and end day will have 1 day added to the end day because they would not render on the chart"
   },
-  "sorting": {
-    "title": "Sort Select",
-    "asc": "Ascending",
-    "desc": "Descending"
-  },
   "chartLanguage": {
     "title": "Language Select",
     "user": "User Title",
@@ -27,9 +22,11 @@
     "refresh_directions": "Press Refresh to refresh the page",
     "user_loading": "User Loading",
     "loading_disclaimer": "It'll take a few seconds to load all your data, depending on how large your list is",
-    "not_found": "User Not Found",
+    "not_found": "User or list not found.",
     "unavail": "Service Unavailable",
     "update_directions": "Press update button below to add user",
-    "invalid_date": "Invalid date range for {name}. (Start: {start}, End: {end})"
+    "invalid_date": "{name} (Start: {start}, End: {end})",
+    "date_range": "Invalid date range(s)",
+    "anilist_instructions": "Click here to go to your list on anilist"
   }
 }
