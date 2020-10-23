@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="main">
-    <div class="nav w-full bg-elevation-1 p-4 flex items-center justify-between flex-wrap">
+    <div class="nav w-full bg-elevation-1 px-4 flex items-center justify-between flex-wrap">
       <router-link class="font-mono italic text-white-o-87" to="/">{{ $t ('projectName') }}</router-link>
-      <section class="flex flex-no-wrap items-center">
+      <section class="flex flex-no-wrap items-center h-full">
         <input
           type="text"
           class="shadow appearance-none rounded-full w-full py-2 px-3 text-white-o-87 bg-black leading-tight focus:outline-none focus:shadow-outline"

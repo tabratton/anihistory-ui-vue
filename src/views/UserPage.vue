@@ -1,6 +1,6 @@
 <template>
   <div class="user-grid">
-    <div v-if="error" class="user">
+    <div v-if="error" class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded">
       <p class="text-center text-lg font-bold text-white-o-87">{{ message }}</p>
       <p class="text-center text-white-o-87 text-sm">{{ $t('messages.update_directions') }}</p>
     </div>
@@ -8,13 +8,9 @@
       <Loading></Loading>
     </div>
     <div v-if="model" class="user">
-      <Chart v-bind:list="model" v-bind:sort="sort" v-bind:lang="lang"></Chart>
+      <Chart v-bind:list="model" v-bind:lang="lang"></Chart>
     </div>
     <div class="controls">
-      <div class="sort text-center flex flex-col">
-        <label for="sort-select" class="mb-1 text-white-o-87">{{ $t('sorting.title') }}</label>
-        <CustomSelect id="sort-select" v-bind:items="sortOptions" v-bind:onChange="updateSort"></CustomSelect>
-      </div>
       <div class="language text-center flex flex-col">
         <label for="lang-select" class="mb-1 text-white-o-87">{{ $t('chartLanguage.title') }}</label>
         <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
@@ -35,7 +31,7 @@
 </template>
 
 <script>
-import { addDays, isEqual, parseISO, subDays } from 'date-fns'
+import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isEqual, formatISO, parseISO, subDays } from 'date-fns'
 
 import Chart from '@/components/Chart'
 import CustomSelect from '@/components/CustomSelect'
@@ -55,16 +51,6 @@ export default {
       updateUserLoading: false,
       error: false,
       model: true,
-      sortOptions: [
-        {
-          value: 'desc',
-          message: this.$t('sorting.desc')
-        },
-        {
-          value: 'asc',
-          message: this.$t('sorting.asc')
-        }
-      ],
       langOptions: [
         {
           value: 'user',
@@ -83,7 +69,6 @@ export default {
           message: this.$t('chartLanguage.native')
         }
       ],
-      sort: this.$t('sorting.desc'),
       lang: this.$t('chartLanguage.user'),
       message: null,
       modalActive: false
@@ -96,12 +81,46 @@ export default {
     $route: 'fetchData'
   },
   methods: {
-    updateSort(val) {
-      this.sort = val
-    },
     updateLang(val) {
       this.lang = val
     },
+
+    createGroupCategories(list) {
+      const rows = [[]]
+
+      list.forEach(listElement => {
+        // Check each row for each list element to make sure all possible gaps are filled
+        rows.forEach((row, index) => {
+          if (listElement.category) return
+
+          const length = row.length
+
+          // If there's no other elements there can't be date range conflicts
+          if (length === 0) {
+            listElement.category = `${index}`
+            row.push(listElement)
+            return
+          }
+
+          // Find out if there are any elements that have date range conflicts in this row
+          const conflictInRow = row
+            .map(rowElement => areIntervalsOverlapping({ start: rowElement.start_day, end: rowElement.end_day }, { start: listElement.start_day, end: listElement.end_day }))
+            .reduce((a, b) => a || b)
+
+          // If no conflicts, add the current element to the row,
+          // otherwise add a new row if this is the last row
+          if (!conflictInRow) {
+            listElement.category = `${index}`
+            row.push(listElement)
+          } else if (!rows[index + 1]) {
+            rows.push([])
+          }
+        })
+      })
+
+      return rows
+    },
+
     fetchData() {
       this.loading = true
       this.model = null
@@ -134,16 +153,32 @@ export default {
             if (isEqual(e.start_day, e.end_day)) {
               e.end_day = addDays(e.end_day, 1)
             }
+
+            if (isBefore(e.end_day, e.start_day)) {
+              // TODO: Add <a> link to anilist page to update date range.
+              // update template to display contextual secondary message
+              // implement irish translation
+              const error = new Error(this.$i18n.t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
+              error.name = 42
+              throw error
+            }
           })
+
+          this.createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
 
           this.model = list
         })
         .catch(error => {
-          this.message =
-            error.status === 404
-              ? this.$i18n.t('messages.not_found')
-              : this.$i18n.t('messages.unavail')
+          if (error.status === 404) {
+            this.message = this.$i18n.t('messages.not_found')
+          } else if (error.name === 42) {
+            this.message = error.message
+          } else {
+            this.message = this.$i18n.t('messages.unavail')
+          }
+
           this.error = true
+          // console.error(error)
         })
         .finally(() => (this.loading = false))
     },
@@ -180,7 +215,6 @@ export default {
 
 .user {
   grid-area: user;
-  height: 100%;
 }
 
 .controls {

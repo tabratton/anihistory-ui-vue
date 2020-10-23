@@ -26,9 +26,10 @@
     "refresh": "Refresh",
     "refresh_directions": "Press Refresh to refresh the page",
     "user_loading": "User Loading",
-    "loading_disclaimer": "It may take a minute or two to load all data",
+    "loading_disclaimer": "It'll take a few seconds to load all your data, depending on how large your list is",
     "not_found": "User Not Found",
     "unavail": "Service Unavailable",
-    "update_directions": "Press update button below to add user"
+    "update_directions": "Press update button below to add user",
+    "invalid_date": "Invalid date range for {name}. (Start: {start}, End: {end})"
   }
 }
