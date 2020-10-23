@@ -73,7 +73,7 @@ export default {
           message: this.$t('chartLanguage.native')
         }
       ],
-      lang: this.$t('chartLanguage.user'),
+      lang: 'user',
       message: null,
       modalActive: false
     }
