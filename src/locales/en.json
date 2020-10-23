@@ -1,6 +1,6 @@
 {
   "projectName": "AniHistory",
-  "subtitle": "It's a website, I guess",
+  "subtitle": "AniHistory reads your anime list from your <a class='text-orange-600' href='https://anilist.co' target='_blank'>AniList</a> profile and creates a timeline to visualize your watch history.",
   "update": "Update User",
   "navigationBar": {
     "username": "User Name",
@@ -24,7 +24,7 @@
     "loading_disclaimer": "It'll take a few seconds to load all your data, depending on how large your list is",
     "not_found": "User or list not found.",
     "unavail": "Service Unavailable",
-    "update_directions": "Press update button below to add user",
+    "update_directions": "Press the update button below to add user",
     "invalid_date": "{name} (Start: {start}, End: {end})",
     "date_range": "Invalid date range(s)",
     "anilist_instructions": "Click here to go to your list on anilist"
