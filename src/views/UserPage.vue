@@ -139,6 +139,11 @@ export default {
       this.$http
         .get(`/users/${this.$route.params.username}`)
         .then(({ data: { users } }) => {
+          this.$emit('update-user', {
+            username: users.id,
+            avatar: users.avatar
+          })
+
           const list = users.list
           const dateRangeErrors = []
 

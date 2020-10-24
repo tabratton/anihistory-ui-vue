@@ -1,7 +1,11 @@
 <template>
   <div id="app" class="main">
     <div class="nav w-full bg-elevation-1 px-4 flex items-center justify-between flex-wrap">
-      <router-link class="font-mono italic text-white-o-87 text-lg" to="/">{{ $t ('projectName') }}</router-link>
+      <router-link class="font-mono italic text-white-o-87 text-lg" to="/" v-on:click="wipeUser">{{ $t ('projectName') }}</router-link>
+      <div class="flex items-center justify-between" v-if="displayUsername && avatar">
+        <img class="avatar" :src="avatar" :alt="displayUsername">
+        <p class="text-white text-opacity-87 ml-2">{{ displayUsername }}</p>
+      </div>
       <section class="flex flex-no-wrap items-center h-full">
         <div class="search-input__wrapper">
           <input
@@ -17,7 +21,7 @@
         </div>
       </section>
     </div>
-    <router-view class="content px-4"/>
+    <router-view class="content px-4" v-on:update-user="updateUser" v-on:clear-user="wipeUser"/>
   </div>
 </template>
 
@@ -25,7 +29,9 @@
 export default {
   data() {
     return {
-      username: ''
+      username: '',
+      displayUsername: null,
+      avatar: null
     }
   },
   methods: {
@@ -34,6 +40,20 @@ export default {
         name: 'user-page',
         params: { username: this.username }
       })
+      this.username = ''
+    },
+    updateUser(user) {
+      if (!user) {
+        this.wipeUser()
+        return
+      }
+
+      this.displayUsername = user.username
+      this.avatar = user.avatar
+    },
+    wipeUser() {
+      this.displayUsername = null
+      this.avatar = null
     }
   }
 }
@@ -75,5 +95,9 @@ body.modal-active {
   right: 12px;
   height: 24px;
   width: 24px;
+}
+
+.avatar {
+  height: 64px;
 }
 </style>

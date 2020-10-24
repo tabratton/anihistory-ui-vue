@@ -6,6 +6,9 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  created() {
+    this.$emit('clear-user')
+  }
 }
 </script>
