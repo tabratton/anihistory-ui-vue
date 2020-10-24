@@ -3,7 +3,7 @@
     <div class="nav w-full bg-elevation-1 px-4 flex items-center justify-between flex-wrap">
       <router-link class="font-mono italic text-white-o-87 text-lg" to="/" v-on:click="wipeUser">{{ $t ('projectName') }}</router-link>
       <div class="flex items-center justify-between" v-if="displayUsername && avatar">
-        <img class="avatar" :src="avatar" :alt="displayUsername">
+        <img class="avatar rounded" :src="avatar" :alt="displayUsername">
         <p class="text-white text-opacity-87 ml-2">{{ displayUsername }}</p>
       </div>
       <section class="flex flex-no-wrap items-center h-full">
