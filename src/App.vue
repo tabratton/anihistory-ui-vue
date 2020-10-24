@@ -3,17 +3,18 @@
     <div class="nav w-full bg-elevation-1 px-4 flex items-center justify-between flex-wrap">
       <router-link class="font-mono italic text-white-o-87 text-lg" to="/">{{ $t ('projectName') }}</router-link>
       <section class="flex flex-no-wrap items-center h-full">
-        <input
-          type="text"
-          class="shadow appearance-none rounded-full w-full py-2 px-3 text-white-o-87 bg-black leading-tight focus:outline-none focus:shadow-outline"
-          v-model="username"
-          v-on:keypress.enter="goToUser"
-          v-bind:placeholder="$t('navigationBar.username')"
-        >
-        <button
-          class="ml-4 bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-3 rounded leading-tight focus:outline-none"
-          v-on:click="goToUser"
-        >{{ $t('navigationBar.search') }}</button>
+        <div class="search-input__wrapper">
+          <input
+            type="text"
+            class="shadow appearance-none rounded-full w-full py-2 px-3 text-white text-opacity-87 placeholder-white placeholder-opacity-65 bg-black leading-tight focus:outline-none focus:shadow-outline"
+            v-model="username"
+            v-on:keypress.enter="goToUser"
+            v-bind:placeholder="$t('navigationBar.username')"
+          >
+          <svg class="text-white text-opacity-65" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
       </section>
     </div>
     <router-view class="content px-4"/>
@@ -62,5 +63,17 @@ export default {
 body.modal-active {
   overflow-x: hidden;
   overflow-y: visible !important;
+}
+
+.search-input__wrapper {
+  position: relative;
+}
+
+.search-input__wrapper svg {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  height: 24px;
+  width: 24px;
 }
 </style>
