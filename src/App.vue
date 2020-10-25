@@ -4,7 +4,7 @@
       <router-link class="font-mono italic text-white-o-87 text-lg" to="/" v-on:click="wipeUser">{{ $t ('projectName') }}</router-link>
       <div class="flex items-center justify-between" v-if="displayUsername && avatar">
         <img class="avatar rounded" :src="avatar" :alt="displayUsername">
-        <p class="text-white text-opacity-87 ml-2">{{ displayUsername }}</p>
+        <a class="text-orange-600 ml-2" href="">{{ displayUsername }}</a>
       </div>
       <section class="flex flex-no-wrap items-center h-full">
         <div class="search-input__wrapper">
@@ -31,7 +31,8 @@ export default {
     return {
       username: '',
       displayUsername: null,
-      avatar: null
+      avatar: null,
+      url: null
     }
   },
   methods: {
@@ -50,10 +51,12 @@ export default {
 
       this.displayUsername = user.username
       this.avatar = user.avatar
+      this.url = user.url
     },
     wipeUser() {
       this.displayUsername = null
       this.avatar = null
+      this.url = null
     }
   }
 }

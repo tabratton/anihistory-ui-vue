@@ -141,7 +141,8 @@ export default {
         .then(({ data: { users } }) => {
           this.$emit('update-user', {
             username: users.id,
-            avatar: users.avatar
+            avatar: users.avatar,
+            url: this.animeListUrl
           })
 
           const list = users.list
