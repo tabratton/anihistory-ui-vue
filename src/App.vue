@@ -4,7 +4,7 @@
       <router-link class="font-mono italic text-white-o-87 text-lg" to="/" v-on:click="wipeUser">{{ $t ('projectName') }}</router-link>
       <div class="flex items-center justify-between" v-if="displayUsername && avatar">
         <img class="avatar rounded" :src="avatar" :alt="displayUsername">
-        <a class="text-orange-600 ml-2" href="">{{ displayUsername }}</a>
+        <a class="text-orange-600 ml-2" :href="url" target="_blank">{{ displayUsername }}</a>
       </div>
       <section class="flex flex-no-wrap items-center h-full">
         <div class="search-input__wrapper">
