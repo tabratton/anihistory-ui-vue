@@ -1,9 +1,9 @@
 <template>
-  <div class="user-grid">
+  <div class="user-grid grid">
     <div v-if="error" class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded">
-      <p class="text-center text-lg font-bold text-white-o-87">{{ message }}</p>
-      <p class="text-center text-white-o-87 text-sm" v-if="errorType === 'NotFound'">{{ $t('messages.update_directions') }}</p>
-      <p class="text-center text-white-o-87 text-sm m-2" v-for="err in errorList" :key="err.message">{{ err.message }}</p>
+      <p class="text-center text-lg font-bold text-gray-100">{{ message }}</p>
+      <p class="text-center text-gray-100 text-sm" v-if="errorType === 'NotFound'">{{ $t('messages.update_directions') }}</p>
+      <p class="text-center text-gray-100 text-sm m-2" v-for="err in errorList" :key="err.message">{{ err.message }}</p>
       <a class="text-orange-600 text-sm" :href="animeListUrl" target="_blank">{{ $t('messages.anilist_instructions') }}</a>
     </div>
     <div v-if="loading" class="user flex items-center">
@@ -12,15 +12,15 @@
     <div v-if="model" class="user">
       <Chart v-bind:list="model" v-bind:lang="lang"></Chart>
     </div>
-    <div class="controls">
+    <div class="controls grid items-center justify-items-center">
       <div class="language text-center flex flex-col">
-        <label for="lang-select" class="mb-1 text-white-o-87">{{ $t('chartLanguage.title') }}</label>
+        <label for="lang-select" class="mb-1 text-gray-100">{{ $t('chartLanguage.title') }}</label>
         <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
       </div>
-      <em class="disclaimer text-white-o-87 text-center pb-4 text-sm sm:text-base">{{ $t('chart.disclaimer') }}</em>
+      <em class="disclaimer text-gray-100 text-center pb-4 text-sm sm:text-base">{{ $t('chart.disclaimer') }}</em>
       <div class="update">
         <button
-          class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-3 rounded focus:outline-none"
+          class="bg-orange-600 hover:bg-orange-500 text-gray-200 font-bold py-2 px-3 rounded focus:outline-none"
           :class="{ loading: updateUserLoading }"
           @click="updateUser()"
         >{{ $t('update') }}</button>
@@ -228,7 +228,6 @@ export default {
 
 <style scoped lang='css'>
 .user-grid {
-  display: grid;
   grid: 'user' 1fr
         'controls' 180px /
         1fr;
@@ -241,12 +240,9 @@ export default {
 
 .controls {
   grid-area: controls;
-  display: grid;
   grid: 'language       update     disclaimer' 1fr /
         1fr         1fr        1fr;
   grid-row-gap: 4px;
-  align-items: center;
-  justify-items: center;
 }
 
 @media (max-width: 640px) {

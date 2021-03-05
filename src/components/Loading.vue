@@ -1,5 +1,5 @@
 <template>
-  <div class="lds-roller mx-auto">
+  <div class="inline-block relative lds-roller mx-auto">
     <div></div>
     <div></div>
     <div></div>
@@ -19,8 +19,6 @@ export default {
 
 <style scoped lang="css">
 .lds-roller {
-  display: inline-block;
-  position: relative;
   width: 80px;
   height: 80px;
 }
@@ -32,12 +30,10 @@ export default {
 
 .lds-roller div:after {
   content: " ";
-  display: block;
-  position: absolute;
+  @apply block absolute bg-orange-600;
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #DD6B20;
   margin: -4px 0 0 -4px;
 }
 

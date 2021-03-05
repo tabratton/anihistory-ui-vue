@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartdiv" lang="ja" class="chart text-italic"></div>
+  <div ref="chartdiv" lang="ja" class="h-full w-full text-italic"></div>
 </template>
 
 <script>
@@ -133,10 +133,5 @@ export default {
 <style lang="css">
   .amcharts-XYSeries .amcharts-Sprite-group .amcharts-Container-group {
     cursor: pointer;
-  }
-
-  .chart {
-    width: 100%;
-    height: 100%;
   }
 </style>
