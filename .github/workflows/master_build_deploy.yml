@@ -8,19 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2.1.5
       with:
-        node-version: ${{ matrix.node-version }}
-    - uses: borales/actions-yarn@v2.0.1
+        node-version: 14
+    - uses: borales/actions-yarn@v2.3.0
       with:
-          cmd: install
-    - uses: borales/actions-yarn@v2.0.1
+        cmd: install
+    - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: build
       env:
@@ -28,19 +25,16 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2.1.5
       with:
-        node-version: ${{ matrix.node-version }}
-    - uses: borales/actions-yarn@v2.0.1
+        node-version: 14
+    - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: install
-    - uses: borales/actions-yarn@v2.0.1
+    - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: build
     - name: Clean install dependencies and build
