@@ -3,3 +3,12 @@
 @tailwind components;
 
 @tailwind utilities;
+
+input[type=text],
+select {
+    @apply text-gray-100 placeholder-gray-100 placeholder-opacity-65 bg-gray-800 ring-1 ring-gray-700 hover:ring-1 hover:ring-gray-400 focus:ring-2 focus:ring-orange-700 focus:border-orange-700;
+}
+
+button {
+    @apply bg-orange-700 hover:bg-orange-600 text-gray-200 font-bold py-2 px-3 rounded focus:outline-none
+}

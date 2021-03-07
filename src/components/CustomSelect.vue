@@ -1,6 +1,6 @@
 <template>
   <div class="inline-block relative w-64">
-    <select :id="id" v-model="selected" class="block bg-gray-800 text-gray-100 w-full border border-gray-600 hover:border-gray-500 pl-4 py-2 rounded focus:outline-none focus:ring-orange-700">
+    <select :id="id" v-model="selected" class="block w-full pl-4 py-2 rounded">
       <option v-for="item in items" :key="item.value" :value="item.value">{{item.message}}</option>
     </select>
     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-100">

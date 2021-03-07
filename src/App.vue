@@ -10,7 +10,7 @@
         <div class="relative">
           <input
             type="text"
-            class="text-base rounded-full w-full py-2 px-3 text-gray-100 placeholder-gray-100 placeholder-opacity-65 bg-gray-800 focus:ring-2 focus:ring-orange-700 focus:border-orange-700"
+            class="text-base rounded-full w-full py-2 px-3"
             v-model="username"
             v-on:keypress.enter="goToUser"
             v-bind:placeholder="$t('navigationBar.username')"

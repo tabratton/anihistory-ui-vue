@@ -20,7 +20,6 @@
       <em class="disclaimer text-gray-100 text-center pb-4 text-sm sm:text-base">{{ $t('chart.disclaimer') }}</em>
       <div class="update">
         <button
-          class="bg-orange-600 hover:bg-orange-500 text-gray-200 font-bold py-2 px-3 rounded focus:outline-none"
           :class="{ loading: updateUserLoading }"
           @click="updateUser()"
         >{{ $t('update') }}</button>

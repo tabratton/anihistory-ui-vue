@@ -24,7 +24,7 @@
 
         <!--Footer-->
         <div class="flex justify-end bg-elevation-1 mt-3 py-4 px-6">
-          <button class="bg-orange-600 hover:bg-orange-500 text-gray-100 py-2 px-3 rounded focus:outline-none" @click="$router.go()">{{ $t('messages.refresh') }}</button>
+          <button @click="$router.go()">{{ $t('messages.refresh') }}</button>
         </div>
 
       </div>
