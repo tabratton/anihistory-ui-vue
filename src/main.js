@@ -1,19 +1,18 @@
 import Axios from 'axios'
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 import App from './App.vue'
 import i18n from './i18n'
 import router from './router'
 import './assets/tailwind.css'
 
-Vue.config.productionTip = false
+const app = createApp(App)
 
-Vue.prototype.$http = Axios
-Vue.prototype.$http.defaults.baseURL = 'https://rust.swigglemeister.com'
-Vue.prototype.$http.defaults.headers.post['Content-Type'] = 'application/json'
+Axios.defaults.baseURL = 'https://rust.swigglemeister.com'
+Axios.defaults.headers.post['Content-Type'] = 'application/json'
 
-new Vue({
-  router,
-  i18n,
-  render: h => h(App)
-}).$mount('#app')
+app.config.globalProperties.http = Axios
+app.use(router)
+app.use(i18n)
+
+app.mount('#app')

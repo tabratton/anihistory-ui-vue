@@ -1,99 +1,127 @@
 <template>
   <div class="user-grid grid">
-    <div v-if="error" class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded">
-      <p class="text-center text-lg font-bold text-gray-100">{{ message }}</p>
-      <p class="text-center text-gray-100 text-sm" v-if="errorType === 'NotFound'">{{ $t('messages.update_directions') }}</p>
-      <p class="text-center text-gray-100 text-sm m-2" v-for="err in errorList" :key="err.message">{{ err.message }}</p>
-      <a class="text-orange-600 text-sm" :href="animeListUrl" target="_blank">{{ $t('messages.anilist_instructions') }}</a>
+    <div
+      v-if="error"
+      class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded"
+    >
+      <p
+        v-if="error === 'NotFound'"
+        class="text-center text-gray-100 text-sm"
+      >
+        {{ t('messages.update_directions') }}
+      </p>
+      <p
+        v-for="m in messages"
+        :key="m.message"
+        class="text-center text-gray-100 text-sm m-2"
+      >
+        {{ m.message }}
+      </p>
+      <a
+        v-if="error === 'DateRange'"
+        class="text-orange-600 text-sm"
+        :href="animeListUrl"
+        target="_blank"
+      >
+        {{ t('messages.anilist_instructions') }}
+      </a>
     </div>
-    <div v-if="loading" class="user flex items-center">
-      <Loading></Loading>
-    </div>
-    <div v-if="model" class="user">
-      <Chart v-bind:list="model" v-bind:lang="lang"></Chart>
+    <div :class="`user${loading ? ' flex items-center' : ''}`">
+      <Loading :loading="loading">
+        <Chart
+          v-if="!error"
+          :list="model"
+          :lang="lang"
+        />
+      </Loading>
     </div>
     <div class="controls grid items-center justify-items-center">
       <div class="language text-center flex flex-col">
-        <label for="lang-select" class="mb-1 text-gray-100">{{ $t('chartLanguage.title') }}</label>
-        <CustomSelect id="lang-select" v-bind:items="langOptions" v-bind:onChange="updateLang"></CustomSelect>
+        <label
+          for="lang-select"
+          class="mb-1 text-gray-100"
+        >
+          {{ t('chartLanguage.title') }}
+        </label>
+        <div class="inline-block relative w-64">
+          <select
+            id="lang-select"
+            v-model="lang"
+            class="block w-full pl-4 py-2 bg-none rounded"
+          >
+            <option value="user">
+              {{ t('chartLanguage.user') }}
+            </option>
+            <option value="english">
+              {{ t('chartLanguage.english') }}
+            </option>
+            <option value="romaji">
+              {{ t('chartLanguage.romaji') }}
+            </option>
+            <option value="native">
+              {{ t('chartLanguage.native') }}
+            </option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-100">
+            <svg
+              class="fill-current h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div>
       </div>
-      <em class="disclaimer text-gray-100 text-center pb-4 text-sm sm:text-base">{{ $t('chart.disclaimer') }}</em>
+      <em class="disclaimer text-gray-100 text-center pb-4 text-sm sm:text-base">
+        {{ t('chart.disclaimer') }}
+      </em>
       <div class="update">
-        <button
-          :class="{ loading: updateUserLoading }"
-          @click="updateUser()"
-        >{{ $t('update') }}</button>
+        <button @click="updateUser()">
+          {{ t('update') }}
+        </button>
       </div>
     </div>
 
-    <UpdateModal v-if="modalActive" v-on:close="modalActive = false"></UpdateModal>
-
+    <UpdateModal
+      v-if="modalActive"
+      @close="modalActive = false"
+    />
   </div>
 </template>
 
 <script>
 import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isEqual, formatISO, parseISO, subDays } from 'date-fns'
+import { computed, getCurrentInstance, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 import Chart from '@/components/Chart'
-import CustomSelect from '@/components/CustomSelect'
 import Loading from '@/components/Loading'
 import UpdateModal from '@/components/UpdateModal'
 
 export default {
   components: {
     Chart,
-    CustomSelect,
     Loading,
     UpdateModal
   },
-  data() {
-    return {
-      loading: false,
-      updateUserLoading: false,
-      error: false,
-      errorType: null,
-      errorList: null,
-      model: true,
-      langOptions: [
-        {
-          value: 'user',
-          message: this.$t('chartLanguage.user')
-        },
-        {
-          value: 'english',
-          message: this.$t('chartLanguage.english')
-        },
-        {
-          value: 'romaji',
-          message: this.$t('chartLanguage.romaji')
-        },
-        {
-          value: 'native',
-          message: this.$t('chartLanguage.native')
-        }
-      ],
-      lang: 'user',
-      message: null,
-      modalActive: false
-    }
-  },
-  computed: {
-    animeListUrl() {
-      return `https://anilist.co/user/${this.$route.params.username}/animelist`
-    }
-  },
-  created() {
-    this.fetchData()
-  },
-  watch: {
-    $route: 'fetchData'
-  },
-  methods: {
-    updateLang(val) {
-      this.lang = val
-    },
+  emits: ['update-user'],
+  setup(props, { emit }) {
+    const route = useRoute()
+    const { t } = useI18n({ useScope: 'global' })
+    const http = getCurrentInstance().appContext.config.globalProperties.http
 
-    createGroupCategories(list) {
+    const animeListUrl = computed(() => {
+      return `https://anilist.co/user/${route.params.username}/animelist`
+    })
+
+    const loading = ref(false)
+    const model = ref([])
+    const error = ref(null)
+    const messages = ref([])
+
+    const createGroupCategories = (list) => {
       const rows = [[]]
 
       list.forEach(listElement => {
@@ -127,21 +155,19 @@ export default {
       })
 
       return rows
-    },
+    }
 
-    fetchData() {
-      this.loading = true
-      this.model = null
-      this.error = false
-      this.errorType = null
-      this.errorList = null
-      this.$http
-        .get(`/users/${this.$route.params.username}`)
+    const fetchData = async ({ username }) => {
+      loading.value = true
+      model.value = []
+      error.value = null
+      await http
+        .get(`/users/${username}`)
         .then(({ data: { users } }) => {
-          this.$emit('update-user', {
+          emit('update-user', {
             username: users.id,
             avatar: users.avatar,
-            url: this.animeListUrl
+            url: animeListUrl
           })
 
           const list = users.list
@@ -173,53 +199,59 @@ export default {
             }
 
             if (isBefore(e.end_day, e.start_day)) {
-              const error = new Error(this.$i18n.t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
-              error.name = 42
-              dateRangeErrors.push(error)
+              const err = new Error(t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
+              err.id = 42
+              dateRangeErrors.push(err)
             }
           })
 
           if (dateRangeErrors.length > 0) {
-            this.errorList = dateRangeErrors
+            messages.value = dateRangeErrors
             throw dateRangeErrors[0]
           }
 
-          this.createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
-          this.model = list
+          createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
+          model.value = list
+          loading.value = false
         })
-        .catch(error => {
-          if (error.response && error.response.status === 404) {
-            this.message = this.$i18n.t('messages.not_found')
-            this.errorType = 'NotFound'
-          } else if (error.name === 42) {
-            this.message = this.$i18n.t('messages.date_range')
-            this.errorType = 'DateRange'
+        .catch(e => {
+          if (e.response && e.response.status === 404) {
+            error.value = 'NotFound'
+            messages.value = [{ message: t('messages.not_found') }]
+          } else if (e.id === 42) {
+            error.value = 'DateRange'
+            messages.value.unshift({ message: t('messages.date_range') })
           } else {
-            this.errorType = 'Other'
-            this.message = this.$i18n.t('messages.unavail')
+            error.value = 'Other'
+            messages.value = [{ message: t('messages.unavail') }]
           }
 
-          this.error = true
+          loading.value = false
         })
-        .finally(() => (this.loading = false))
-    },
+    }
 
-    updateUser() {
-      this.updateUserLoading = true
-      this.$http
-        .post(`/users/${this.$route.params.username}`, { dataType: 'text' })
-        .then(() => {
-          this.message = this.$i18n.t('messages.user_loading')
-          this.modalActive = true
-        })
-        .catch(error => {
-          this.message =
-            error.status === 404
-              ? this.$i18n.t('messages.not_found')
-              : this.$i18n.t('messages.unavail')
-          this.modalActive = true
-        })
-        .finally(() => (this.updateUserLoading = false))
+    const modalActive = ref(false)
+
+    const updateUser = () => {
+      http
+        .post(`/users/${route.params.username}`, { dataType: 'text' })
+        .then(() => (modalActive.value = true))
+    }
+
+    watch(() => route.params, async newParams => fetchData(newParams))
+
+    fetchData(route.params)
+
+    return {
+      t,
+      animeListUrl,
+      loading,
+      error,
+      messages,
+      model,
+      lang: ref('user'),
+      modalActive,
+      updateUser
     }
   }
 }
@@ -260,10 +292,6 @@ export default {
 
 .update {
   grid-area: update;
-}
-
-.sort {
-  grid-area: sort;
 }
 
 .language {

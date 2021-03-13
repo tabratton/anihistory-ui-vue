@@ -1,16 +1,13 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
-Vue.use(Router)
+const Home = () => import('./views/Home')
 
-const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home,
       meta: { title: 'Home' }
     },
@@ -22,7 +19,11 @@ const router = new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "user" */ './views/UserPage.vue')
-    }
+    }/*,*/
+    // {
+    //   path: '/:pathMatch(.*)',
+    //   component: NotFoundComponent
+    // }
   ]
 })
 

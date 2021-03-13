@@ -1,120 +1,112 @@
 <template>
-  <div class="inline-block relative lds-roller mx-auto">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+  <div
+    v-if="loading"
+    class="sk-cube-grid"
+  >
+    <div class="sk-cube sk-cube1" />
+    <div class="sk-cube sk-cube2" />
+    <div class="sk-cube sk-cube3" />
+    <div class="sk-cube sk-cube4" />
+    <div class="sk-cube sk-cube5" />
+    <div class="sk-cube sk-cube6" />
+    <div class="sk-cube sk-cube7" />
+    <div class="sk-cube sk-cube8" />
+    <div class="sk-cube sk-cube9" />
   </div>
+  <slot v-if="!loading" />
 </template>
 
 <script>
 export default {
-  name: 'Loading'
+  name: 'Loading',
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  }
 }
 </script>
 
-<style scoped lang="css">
-.lds-roller {
-  width: 80px;
-  height: 80px;
+<style lang="css">
+.sk-cube-grid {
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
 }
 
-.lds-roller div {
-  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px;
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  @apply bg-orange-600 float-left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
 
-.lds-roller div:after {
-  content: " ";
-  @apply block absolute bg-orange-600;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  margin: -4px 0 0 -4px;
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
-.lds-roller div:nth-child(1) {
-  animation-delay: -0.036s;
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
-.lds-roller div:nth-child(1):after {
-  top: 63px;
-  left: 63px;
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
-.lds-roller div:nth-child(2) {
-  animation-delay: -0.072s;
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
-.lds-roller div:nth-child(2):after {
-  top: 68px;
-  left: 56px;
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
-.lds-roller div:nth-child(3) {
-  animation-delay: -0.108s;
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
-.lds-roller div:nth-child(3):after {
-  top: 71px;
-  left: 48px;
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
-.lds-roller div:nth-child(4) {
-  animation-delay: -0.144s;
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
-.lds-roller div:nth-child(4):after {
-  top: 72px;
-  left: 40px;
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
-.lds-roller div:nth-child(5) {
-  animation-delay: -0.18s;
-}
-
-.lds-roller div:nth-child(5):after {
-  top: 71px;
-  left: 32px;
-}
-
-.lds-roller div:nth-child(6) {
-  animation-delay: -0.216s;
-}
-
-.lds-roller div:nth-child(6):after {
-  top: 68px;
-  left: 24px;
-}
-
-.lds-roller div:nth-child(7) {
-  animation-delay: -0.252s;
-}
-
-.lds-roller div:nth-child(7):after {
-  top: 63px;
-  left: 17px;
-}
-
-.lds-roller div:nth-child(8) {
-  animation-delay: -0.288s;
-}
-
-.lds-roller div:nth-child(8):after {
-  top: 56px;
-  left: 12px;
-}
-
-@keyframes lds-roller {
-  0% {
-    transform: rotate(0deg);
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
   }
-  100% {
-    transform: rotate(360deg);
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
   }
 }
 </style>

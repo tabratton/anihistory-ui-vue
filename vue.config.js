@@ -22,8 +22,7 @@ module.exports = {
       enableCloudfront: true,
       cloudfrontId: 'E3RJ815PE513Z4',
       cloudfrontMatchers: '/*',
-      uploadConcurrency: 5,
-      pluginVersion: '3.0.0'
+      uploadConcurrency: 5
     }
   },
   configureWebpack: config => {
@@ -33,24 +32,24 @@ module.exports = {
     } else {
       config.performance.hints = false
     }
-  },
-  chainWebpack: config => {
-    config
-      .plugin('prefetch')
-      .tap(args => {
-        return [
-          {
-            rel: 'prefetch',
-            include: 'asyncChunks',
-            fileBlacklist: [
-              /\.map$/,
-              /pdfmake\.[^.]+\.js$/,
-              /xlsx\.[^.]+\.js$/,
-              /fabric[^.]*\.[^.]+\.js$/,
-              /responsivedefaults\.[^.]+\.js$/
-            ]
-          }
-        ]
-      })
-  }
+  }/*,*/
+  // chainWebpack: config => {
+  //   config
+  //     .plugin('prefetch')
+  //     .tap(args => {
+  //       return [
+  //         {
+  //           rel: 'prefetch',
+  //           include: 'asyncChunks',
+  //           fileBlacklist: [
+  //             /\.map$/,
+  //             /pdfmake\.[^.]+\.js$/,
+  //             /xlsx\.[^.]+\.js$/,
+  //             /fabric[^.]*\.[^.]+\.js$/,
+  //             /responsivedefaults\.[^.]+\.js$/
+  //           ]
+  //         }
+  //       ]
+  //     })
+  // }
 }

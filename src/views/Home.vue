@@ -1,14 +1,25 @@
 <template>
   <div class="h-screen flex flex-col items-center justify-center">
-    <p class="text-center text-gray-100 text-lg" v-html="$t('subtitle')"></p>
+    <p
+      class="text-center text-gray-100 text-lg"
+      v-html="t('subtitle')"
+    />
   </div>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
+
 export default {
-  name: 'home',
-  created() {
-    this.$emit('clear-user')
+  name: 'Home',
+  emits: ['clear-user'],
+  setup(props, { emit }) {
+    const { t } = useI18n({ useScope: 'global' })
+    emit('clear-user')
+
+    return {
+      t
+    }
   }
 }
 </script>
