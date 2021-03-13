@@ -9,7 +9,6 @@
       id="modal-container"
       class="bg-gray-800 m-6 rounded shadow-lg z-50 overflow-y-auto"
     >
-
       <!-- Add margin if you want to see some of the overlay behind the modal-->
       <div
         id="modal-content"
