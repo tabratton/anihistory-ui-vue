@@ -127,6 +127,8 @@ export default {
       list.forEach(listElement => {
         // Check each row for each list element to make sure all possible gaps are filled
         rows.forEach((row, index) => {
+          if (listElement.category) return
+          
           const length = row.length
 
           // If there's no other elements there can't be date range conflicts
