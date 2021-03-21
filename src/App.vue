@@ -95,7 +95,7 @@ export default {
 
     const updateUser = user => {
       if (!user) {
-        this.wipeUser()
+        wipeUser()
         return
       }
 
