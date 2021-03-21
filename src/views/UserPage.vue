@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isEqual, formatISO, parseISO, subDays } from 'date-fns'
+import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isDate, isEqual, formatISO, parseISO, subDays } from 'date-fns'
 import { computed, getCurrentInstance, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -121,14 +121,14 @@ export default {
     const error = ref(null)
     const messages = ref([])
 
-    const createGroupCategories = (list) => {
+    const createGroupCategories = list => {
       const rows = [[]]
 
       list.forEach(listElement => {
         // Check each row for each list element to make sure all possible gaps are filled
         rows.forEach((row, index) => {
           if (listElement.category) return
-          
+
           const length = row.length
 
           // If there's no other elements there can't be date range conflicts
@@ -161,73 +161,113 @@ export default {
       loading.value = true
       model.value = []
       error.value = null
-      await http
-        .get(`/users/${username}`)
-        .then(({ data: { users } }) => {
-          emit('update-user', {
-            username: users.id,
-            avatar: users.avatar,
-            url: animeListUrl
-          })
 
-          const list = users.list
-          const dateRangeErrors = []
+      const processList = list => {
+        const dateRangeErrors = []
 
-          list.forEach(e => {
-            if (e.start_day) {
-              e.start_day = parseISO(e.start_day)
-            } else if (e.end_day) {
-              e.start_day = subDays(parseISO(e.end_day), 1)
-            } else {
-              e.start_day = new Date()
-            }
-
-            e.english = e.english
-              ? e.english
-              : e.user_title
-            e.romaji = e.romaji
-              ? e.romaji
-              : e.user_title
-            e.native = e.native
-              ? e.native
-              : e.user_title
-            e.user = e.user_title
-
-            e.end_day = e.end_day ? parseISO(e.end_day) : new Date()
-            if (isEqual(e.start_day, e.end_day)) {
-              e.end_day = addDays(e.end_day, 1)
-            }
-
-            if (isBefore(e.end_day, e.start_day)) {
-              const err = new Error(t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
-              err.id = 42
-              dateRangeErrors.push(err)
-            }
-          })
-
-          if (dateRangeErrors.length > 0) {
-            messages.value = dateRangeErrors
-            throw dateRangeErrors[0]
-          }
-
-          createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
-          model.value = list
-          loading.value = false
-        })
-        .catch(e => {
-          if (e.response && e.response.status === 404) {
-            error.value = 'NotFound'
-            messages.value = [{ message: t('messages.not_found') }]
-          } else if (e.id === 42) {
-            error.value = 'DateRange'
-            messages.value.unshift({ message: t('messages.date_range') })
+        list.forEach(e => {
+          if (e.start_day) {
+            e.start_day = isDate(e.start_day) ? e.start_day : parseISO(e.start_day)
+          } else if (e.end_day) {
+            e.start_day = subDays(isDate(e.end_day) ? e.end_day : parseISO(e.end_day), 1)
           } else {
-            error.value = 'Other'
-            messages.value = [{ message: t('messages.unavail') }]
+            e.start_day = new Date()
           }
 
-          loading.value = false
+          e.english = e.english
+            ? e.english
+            : e.user_title
+          e.romaji = e.romaji
+            ? e.romaji
+            : e.user_title
+          e.native = e.native
+            ? e.native
+            : e.user_title
+          e.user = e.user_title
+
+          e.end_day = e.end_day ? (isDate(e.end_day) ? e.end_day : parseISO(e.end_day)) : new Date()
+          if (isEqual(e.start_day, e.end_day)) {
+            e.end_day = addDays(e.end_day, 1)
+          }
+
+          if (isBefore(e.end_day, e.start_day)) {
+            const err = new Error(t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
+            err.id = 42
+            dateRangeErrors.push(err)
+          }
         })
+
+        if (dateRangeErrors.length > 0) {
+          messages.value = dateRangeErrors
+          throw dateRangeErrors[0]
+        }
+
+        createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
+        model.value = list
+        loading.value = false
+      }
+
+      const handleError = e => {
+        if (e.response && e.response.status === 404) {
+          error.value = 'NotFound'
+          messages.value = [{ message: t('messages.not_found') }]
+        } else if (e.id === 42) {
+          error.value = 'DateRange'
+          messages.value.unshift({ message: t('messages.date_range') })
+        } else {
+          error.value = 'Other'
+          messages.value = [{ message: t('messages.unavail') }]
+        }
+
+        loading.value = false
+      }
+
+      const useAnilistNative = false
+      if (useAnilistNative) {
+        const { data: { data: { User: { avatar, id } } } } = await http.post('https://graphql.anilist.co', { query: `query {User(name: "${route.params.username}") {id name avatar { large } } }` })
+
+        emit('update-user', {
+          username: route.params.username,
+          avatar: avatar.large,
+          url: animeListUrl.value
+        })
+
+        await http
+          .post('https://graphql.anilist.co', { query: `query { MediaListCollection(userId: ${id}, type: ANIME) { lists { name entries { ...mediaListEntry } } } } fragment mediaListEntry on MediaList { scoreRaw: score(format: POINT_100) startedAt { year month day } completedAt { year month day } media { id title { userPreferred english romaji native } description(asHtml: true) coverImage { large } averageScore siteUrl } }` })
+          .then(({ data: { data: { MediaListCollection: { lists } } } }) => {
+            const mergedList = [...lists.find(e => e.name === 'Completed').entries, ...lists.find(e => e.name === 'Watching').entries]
+
+            processList(mergedList.map(e => {
+              return {
+                average: e.media.averageScore,
+                cover: e.media.coverImage.large,
+                description: e.media.description,
+                end_day: !!e.completedAt.year ? new Date(e.completedAt.year, e.completedAt.month, e.completedAt.day) : null,
+                english: e.media.title.english,
+                id: e.media.id,
+                native: e.media.title.native,
+                romaji: e.media.title.romaji,
+                score: e.scoreRaw,
+                start_day: !!e.startedAt.year ? new Date(e.startedAt.year, e.startedAt.month, e.startedAt.day) : null,
+                user_title: e.media.title.userPreferred
+              }
+            }))
+          })
+        .catch(e => handleError(e))
+      } else {
+        await http
+          .get(`/users/${username}`)
+          .then(({ data: { users } }) => {
+            emit('update-user', {
+              username: users.id,
+              avatar: users.avatar,
+              url: animeListUrl
+            })
+
+            processList(users.list)
+          })
+          .catch(e => handleError(e))
+      }
     }
 
     const modalActive = ref(false)

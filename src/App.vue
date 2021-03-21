@@ -93,7 +93,7 @@ export default {
       username.value = ''
     }
 
-    const updateUser = (user) => {
+    const updateUser = user => {
       if (!user) {
         this.wipeUser()
         return
