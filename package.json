@@ -19,7 +19,7 @@
     "postcss": "7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^3.0.0",
-    "vue-i18n": "^9.0.0",
+    "vue-i18n": "^9.1.2",
     "vue-router": "4"
   },
   "devDependencies": {
