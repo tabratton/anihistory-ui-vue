@@ -2,7 +2,7 @@
   <div
     ref="chartDiv"
     lang="ja"
-    class="h-full w-full text-italic"
+    class="flex-grow w-full text-italic"
   />
 </template>
 
@@ -28,6 +28,7 @@ import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
 import theme from '@amcharts/amcharts4/themes/spiritedaway'
 
 import { onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 options.autoSetClassName = true
 useTheme(am4themesAnimated)
@@ -48,6 +49,7 @@ export default {
     }
   },
   setup(props) {
+    const { t } = useI18n({ useScope: 'global' })
     const { list, lang } = toRefs(props)
 
     const chartDiv = ref(null)
@@ -67,7 +69,6 @@ export default {
         }
       })
       internalChart.paddingRight = 30
-      internalChart.dateFormatter.inputDateFormat = 'yyyy-MM-dd'
 
       const categoryAxis = internalChart.yAxes.push(new CategoryAxis())
       categoryAxis.dataFields.category = 'category'
@@ -80,9 +81,7 @@ export default {
       categoryAxis.cursorTooltipEnabled = false
 
       const dateAxis = internalChart.xAxes.push(new DateAxis())
-      dateAxis.dateFormatter.dateFormat = 'yyyy-MM-dd'
       dateAxis.renderer.minGridDistance = 70
-      dateAxis.baseInterval = { count: 1, timeUnit: 'day' }
       dateAxis.tooltipDateFormat = 'yyyy-MM-dd'
       dateAxis.renderer.fontSize = 12
       dateAxis.renderer.labels.template.fill = color('#F9FAFB')
@@ -92,10 +91,34 @@ export default {
 
       const series1 = internalChart.series.push(new ColumnSeries())
       series1.columns.template.width = percent(80)
-      series1.columns.template.tooltipText = `{${lang.value}}: {openDateX} - {dateX}`
+      series1.columns.template.tooltipHTML = ''
+      series1.columns.template.adapter.add('tooltipHTML', (html, context) => {
+        return `
+                <div class="flex flex-col items-center justify-center w-96">
+                    <h4 class="text-2xl font-bold mb-2">{${lang.value}}</h4>
+                    <span class="flex justify-between w-full">
+                        <span class="font-bold mr-1">${t('chart.started')}</span>
+                        <span>{openDateX}</span>
+                    </span>
+                    <span class="flex justify-between w-full">
+                        <span class="font-bold mr-1">${t('chart.finished')}</span>
+                        <span>{displayEndDay}</span>
+                    </span>
+                    <span class="flex justify-between w-full">
+                        <span class="font-bold mr-1">${t('chart.score')}</span>
+                        <span>{score}</span>
+                    </span>
+                    <span class="flex justify-between w-full">
+                        <span class="font-bold mr-1">${t('chart.average')}</span>
+                        <span>{average}</span>
+                    </span>
+                    <span class="mt-2">${context.dataItem.dataContext.description}</span>
+                </div>
+               `
+      })
 
-      series1.dataFields.openDateX = 'start_day'
-      series1.dataFields.dateX = 'end_day'
+      series1.dataFields.openDateX = 'startDay'
+      series1.dataFields.dateX = 'endDay'
       series1.dataFields.categoryY = 'category'
       series1.columns.template.propertyFields.fill = 'color'
       series1.columns.template.propertyFields.stroke = 'color'
@@ -149,5 +172,9 @@ export default {
 <style lang="css">
   .amcharts-XYSeries .amcharts-Sprite-group .amcharts-Container-group {
     cursor: pointer;
+  }
+
+  foreignObject > div {
+    white-space: unset !important;
   }
 </style>

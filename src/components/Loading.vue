@@ -3,15 +3,15 @@
     v-if="loading"
     class="sk-cube-grid"
   >
-    <div class="sk-cube sk-cube1" />
-    <div class="sk-cube sk-cube2" />
-    <div class="sk-cube sk-cube3" />
-    <div class="sk-cube sk-cube4" />
-    <div class="sk-cube sk-cube5" />
-    <div class="sk-cube sk-cube6" />
-    <div class="sk-cube sk-cube7" />
-    <div class="sk-cube sk-cube8" />
-    <div class="sk-cube sk-cube9" />
+    <div class="sk-cube sk-cube1 float-left bg-main-500" />
+    <div class="sk-cube sk-cube2 float-left bg-main-500" />
+    <div class="sk-cube sk-cube3 float-left bg-main-500" />
+    <div class="sk-cube sk-cube4 float-left bg-main-500" />
+    <div class="sk-cube sk-cube5 float-left bg-main-500" />
+    <div class="sk-cube sk-cube6 float-left bg-main-500" />
+    <div class="sk-cube sk-cube7 float-left bg-main-500" />
+    <div class="sk-cube sk-cube8 float-left bg-main-500" />
+    <div class="sk-cube sk-cube9 float-left bg-main-500" />
   </div>
   <slot v-if="!loading" />
 </template>
@@ -32,13 +32,11 @@ export default {
 .sk-cube-grid {
   width: 40px;
   height: 40px;
-  margin: 100px auto;
 }
 
 .sk-cube-grid .sk-cube {
   width: 33%;
   height: 33%;
-  @apply bg-orange-600 float-left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }

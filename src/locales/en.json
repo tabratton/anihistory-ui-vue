@@ -1,12 +1,16 @@
 {
   "projectName": "AniHistory",
-  "subtitle": "AniHistory reads your anime list from your <a class='text-orange-600' href='https://anilist.co' target='_blank'>AniList</a> profile and creates a timeline to visualize your watch history.",
+  "subtitle": "AniHistory reads your anime list from your <a class='text-main-500' href='https://anilist.co' target='_blank'>AniList</a> profile and creates a timeline to visualize your watch history.",
   "update": "Update User",
   "navigationBar": {
     "username": "Search Username"
   },
   "chart": {
-    "disclaimer": "Note: If the start and end dates for an entry are the same, 1 day is added to the end date so that it will display on the chart."
+    "title": "History Timeline",
+    "score": "Score",
+    "started": "Started",
+    "finished": "Finished",
+    "average": "Average"
   },
   "chartLanguage": {
     "title": "Language Select",
@@ -21,9 +25,8 @@
     "refresh_directions": "Press Refresh to refresh the page",
     "user_loading": "User Loading",
     "loading_disclaimer": "It'll take a few seconds to load all your data, depending on how large your list is",
-    "not_found": "User or list not found.",
+    "not_found": "User not found on AniList",
     "unavail": "Service Unavailable",
-    "update_directions": "Press the update button below to add user",
     "invalid_date": "{name} (Start: {start}, End: {end})",
     "date_range": "Invalid date range(s):",
     "anilist_instructions": "Click here to go to your list on anilist"

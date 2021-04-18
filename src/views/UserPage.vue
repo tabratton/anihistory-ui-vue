@@ -1,97 +1,103 @@
 <template>
-  <div class="user-grid grid">
-    <div
-      v-if="error"
-      class="user flex flex-col justify-center items-center bg-elevation-1 bg-clip-content m-8 rounded"
-    >
-      <p
-        v-if="error === 'NotFound'"
-        class="text-center text-gray-100 text-sm"
-      >
-        {{ t('messages.update_directions') }}
-      </p>
-      <p
-        v-for="m in messages"
-        :key="m.message"
-        class="text-center text-gray-100 text-sm m-2"
-      >
-        {{ m.message }}
-      </p>
-      <a
-        v-if="error === 'DateRange'"
-        class="text-orange-600 text-sm"
-        :href="animeListUrl"
-        target="_blank"
-      >
-        {{ t('messages.anilist_instructions') }}
-      </a>
+  <div class="user rounded justify-self-stretch flex flex-col p-2">
+    <div class="elevation-2 p-4 text-white flex items-center justify-between">
+      <h4 class="text-2xl font-bold">
+        {{ t('chart.title') }}
+      </h4>
+      <button @click="$router.go(0)">
+        <svg
+          height="24"
+          width="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"
+          />
+        </svg>
+      </button>
     </div>
-    <div :class="`user${loading ? ' flex items-center' : ''}`">
+    <div class="elevation-1 flex flex-col items-center justify-center flex-grow p-4">
       <Loading :loading="loading">
         <Chart
           v-if="!error"
           :list="model"
           :lang="lang"
         />
-      </Loading>
-    </div>
-    <div class="controls grid items-center justify-items-center">
-      <div class="language text-center flex flex-col">
-        <label
-          for="lang-select"
-          class="mb-1 text-gray-100"
+        <div
+          v-if="!error"
+          class="controls grid items-center justify-items-center"
         >
-          {{ t('chartLanguage.title') }}
-        </label>
-        <div class="inline-block relative w-64">
-          <select
-            id="lang-select"
-            v-model="lang"
-            class="block w-full pl-4 py-2 bg-none rounded"
-          >
-            <option value="user">
-              {{ t('chartLanguage.user') }}
-            </option>
-            <option value="english">
-              {{ t('chartLanguage.english') }}
-            </option>
-            <option value="romaji">
-              {{ t('chartLanguage.romaji') }}
-            </option>
-            <option value="native">
-              {{ t('chartLanguage.native') }}
-            </option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-100">
-            <svg
-              class="fill-current h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
+          <div class="language text-center flex flex-col">
+            <label
+              for="lang-select"
+              class="sr-only"
             >
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
+              {{ t('chartLanguage.title') }}
+            </label>
+            <div class="inline-block relative w-64">
+              <select
+                id="lang-select"
+                v-model="lang"
+                class="block w-full pl-4 py-2 bg-none"
+              >
+                <option value="user">
+                  {{ t('chartLanguage.user') }}
+                </option>
+                <option value="english">
+                  {{ t('chartLanguage.english') }}
+                </option>
+                <option value="romaji">
+                  {{ t('chartLanguage.romaji') }}
+                </option>
+                <option value="native">
+                  {{ t('chartLanguage.native') }}
+                </option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                <svg
+                  class="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <em class="disclaimer text-gray-100 text-center pb-4 text-sm sm:text-base">
-        {{ t('chart.disclaimer') }}
-      </em>
-      <div class="update">
-        <button @click="updateUser()">
-          {{ t('update') }}
-        </button>
-      </div>
+        <div
+          v-if="error"
+          class="flex flex-col justify-center items-center bg-clip-content"
+        >
+          <p
+            v-for="m in messages"
+            :key="m.message"
+            class="text-center text-gray-100 text-sm m-2"
+          >
+            {{ m.message }}
+          </p>
+          <a
+            v-if="error === 'DateRange'"
+            class="text-main-500 text-sm"
+            :href="animeListUrl"
+            target="_blank"
+          >
+            {{ t('messages.anilist_instructions') }}
+          </a>
+        </div>
+      </Loading>
     </div>
-
-    <UpdateModal
-      v-if="modalActive"
-      @close="modalActive = false"
-    />
   </div>
+
+  <UpdateModal
+    v-if="modalActive"
+    @close="modalActive = false"
+  />
 </template>
 
 <script>
-import { addDays, areIntervalsOverlapping, compareAsc, isBefore, isDate, isEqual, formatISO, parseISO, subDays } from 'date-fns'
+import { addDays, addHours, areIntervalsOverlapping, compareAsc, isBefore, isDate, isSameDay, isSameHour, formatISO, parseISO, startOfDay } from 'date-fns'
 import { computed, getCurrentInstance, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -140,7 +146,7 @@ export default {
 
           // Find out if there are any elements that have date range conflicts in this row
           const conflictInRow = row
-            .map(rowElement => areIntervalsOverlapping({ start: rowElement.start_day, end: rowElement.end_day }, { start: listElement.start_day, end: listElement.end_day }))
+            .map(rowElement => areIntervalsOverlapping({ start: rowElement.startDay, end: rowElement.endDay }, { start: listElement.startDay, end: listElement.endDay }))
             .reduce((a, b) => a || b)
 
           // If no conflicts, add the current element to the row,
@@ -165,35 +171,40 @@ export default {
       const processList = list => {
         const dateRangeErrors = []
 
-        list.forEach(e => {
+        const parsedList = list.map(e => {
+          let realStartDay;
           if (e.start_day) {
-            e.start_day = isDate(e.start_day) ? e.start_day : parseISO(e.start_day)
+            realStartDay = isDate(e.start_day) ? e.start_day : parseISO(e.start_day)
           } else if (e.end_day) {
-            e.start_day = subDays(isDate(e.end_day) ? e.end_day : parseISO(e.end_day), 1)
+            realStartDay = isDate(e.end_day) ? e.end_day : parseISO(e.end_day)
           } else {
-            e.start_day = new Date()
+            realStartDay = new Date()
           }
 
-          e.english = e.english
-            ? e.english
-            : e.user_title
-          e.romaji = e.romaji
-            ? e.romaji
-            : e.user_title
-          e.native = e.native
-            ? e.native
-            : e.user_title
-          e.user = e.user_title
+          realStartDay = addHours(startOfDay(realStartDay), 12)
 
-          e.end_day = e.end_day ? (isDate(e.end_day) ? e.end_day : parseISO(e.end_day)) : new Date()
-          if (isEqual(e.start_day, e.end_day)) {
-            e.end_day = addDays(e.end_day, 1)
-          }
+          const realEndDay = startOfDay(e.end_day ? (isDate(e.end_day) ? e.end_day : parseISO(e.end_day)) : new Date())
+          const chartEndDay = addHours(addDays(realEndDay, 1), 12)
 
-          if (isBefore(e.end_day, e.start_day)) {
-            const err = new Error(t('messages.invalid_date', { start: formatISO(e.start_day, { representation: 'date' }), end: formatISO(e.end_day, { representation: 'date' }), name: e.user_title }).toString())
+          if (isBefore(chartEndDay, realStartDay) || (isSameDay(chartEndDay, realStartDay) && isSameHour(chartEndDay, realStartDay))) {
+            const err = new Error(t('messages.invalid_date', { start: formatISO(realStartDay, { representation: 'date' }), end: formatISO(realEndDay, { representation: 'date' }), name: e.user_title }).toString())
             err.id = 42
             dateRangeErrors.push(err)
+          }
+
+          return {
+            english: e.english ? e.english : e.user_title,
+            romaji: e.romaji ? e.romaji : e.user_title,
+            native: e.native ? e.native : e.user_title,
+            user: e.user_title,
+            average: e.average,
+            cover: e.cover,
+            description: e.description,
+            id: e.id,
+            score: e.score,
+            startDay: realStartDay,
+            endDay: chartEndDay,
+            displayEndDay: realEndDay
           }
         })
 
@@ -202,8 +213,8 @@ export default {
           throw dateRangeErrors[0]
         }
 
-        createGroupCategories(list.sort((a, b) => compareAsc(a.start_day, b.start_day)))
-        model.value = list
+        createGroupCategories(parsedList.sort((a, b) => compareAsc(a.startDay, b.startDay)))
+        model.value = parsedList
         loading.value = false
       }
 
@@ -222,9 +233,11 @@ export default {
         loading.value = false
       }
 
-      const useAnilistNative = false
+      const useAnilistNative = true
       if (useAnilistNative) {
-        const { data: { data: { User: { avatar, id } } } } = await http.post('https://graphql.anilist.co', { query: `query {User(name: "${route.params.username}") {id name avatar { large } } }` })
+        const { data: { data: { User: { avatar, id } } } } = await http
+          .post('https://graphql.anilist.co', { query: `query {User(name: "${route.params.username}") {id name avatar { large } } }` })
+          .catch(err => handleError(err))
 
         emit('update-user', {
           username: route.params.username,
@@ -239,7 +252,7 @@ export default {
 
             processList(mergedList.map(e => {
               return {
-                average: e.media.averageScore,
+                average: e.media.averageScore / 10,
                 cover: e.media.coverImage.large,
                 description: e.media.description,
                 end_day: !!e.completedAt.year ? new Date(e.completedAt.year, e.completedAt.month, e.completedAt.day) : null,
@@ -247,7 +260,7 @@ export default {
                 id: e.media.id,
                 native: e.media.title.native,
                 romaji: e.media.title.romaji,
-                score: e.scoreRaw,
+                score: e.scoreRaw / 10,
                 start_day: !!e.startedAt.year ? new Date(e.startedAt.year, e.startedAt.month, e.startedAt.day) : null,
                 user_title: e.media.title.userPreferred
               }
@@ -298,43 +311,5 @@ export default {
 </script>
 
 <style scoped lang='css'>
-.user-grid {
-  grid: 'user' 1fr
-        'controls' 180px /
-        1fr;
-  grid-row-gap: 4px;
-}
 
-.user {
-  grid-area: user;
-}
-
-.controls {
-  grid-area: controls;
-  grid: 'language       update     disclaimer' 1fr /
-        1fr         1fr        1fr;
-  grid-row-gap: 4px;
-}
-
-@media (max-width: 640px) {
-  .controls {
-    grid: 'language' 1fr
-          'update' 1fr
-          'disclaimer' 1fr /
-          1fr;
-    grid-row-gap: 2px;
-  }
-}
-
-.disclaimer {
-  grid-area: disclaimer;
-}
-
-.update {
-  grid-area: update;
-}
-
-.language {
-  grid-area: language;
-}
 </style>

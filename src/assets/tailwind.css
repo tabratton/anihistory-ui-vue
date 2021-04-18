@@ -6,9 +6,21 @@
 
 input[type=text],
 select {
-    @apply text-gray-100 placeholder-gray-100 placeholder-opacity-65 bg-gray-800 ring-1 ring-gray-700 hover:ring-1 hover:ring-gray-400 focus:ring-2 focus:ring-orange-700 focus:border-orange-700;
+    @apply text-white bg-white bg-opacity-5 placeholder-gray-400 placeholder-opacity-65 focus:ring-0 border-0 border-b-2 border-gray-600 focus:border-main-500;
+}
+
+option {
+    @apply text-white bg-dark-base
 }
 
 button {
-    @apply bg-orange-700 hover:bg-orange-600 text-gray-200 font-bold py-2 px-3 rounded focus:outline-none
+    @apply bg-main-400 hover:bg-main-300 text-dark-base font-bold py-2 px-3 rounded focus:outline-none
+}
+
+.elevation-1 {
+    @apply bg-white bg-opacity-5;
+}
+
+.elevation-2 {
+    @apply bg-white bg-opacity-7;
 }
