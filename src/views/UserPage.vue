@@ -255,13 +255,13 @@ export default {
                 average: e.media.averageScore / 10,
                 cover: e.media.coverImage.large,
                 description: e.media.description,
-                end_day: !!e.completedAt.year ? new Date(e.completedAt.year, e.completedAt.month, e.completedAt.day) : null,
+                end_day: !!e.completedAt.year ? parseISO(`${e.completedAt.year}-${e.completedAt.month}-${e.completedAt.day}`) : null,
                 english: e.media.title.english,
                 id: e.media.id,
                 native: e.media.title.native,
                 romaji: e.media.title.romaji,
                 score: e.scoreRaw / 10,
-                start_day: !!e.startedAt.year ? new Date(e.startedAt.year, e.startedAt.month, e.startedAt.day) : null,
+                start_day: !!e.startedAt.year ? parseISO(`${e.startedAt.year}-${e.startedAt.month}-${e.startedAt.day}`) : null,
                 user_title: e.media.title.userPreferred
               }
             }))
