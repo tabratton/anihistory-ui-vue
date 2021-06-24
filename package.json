@@ -9,7 +9,7 @@
     "deploy": "vue-cli-service s3-deploy"
   },
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.18",
+    "@amcharts/amcharts4": "^4.10.20",
     "@tailwindcss/forms": "^0.3.3",
     "@tailwindcss/postcss7-compat": "^2.1.4",
     "autoprefixer": "9",
