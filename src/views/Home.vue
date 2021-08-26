@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center">
     <p
       class="text-center text-gray-100 text-lg"
       v-html="t('subtitle')"

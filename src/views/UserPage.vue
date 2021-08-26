@@ -90,10 +90,10 @@
     </div>
   </div>
 
-  <UpdateModal
-    v-if="modalActive"
-    @close="modalActive = false"
-  />
+<!--  <UpdateModal-->
+<!--    v-if="modalActive"-->
+<!--    @close="modalActive = false"-->
+<!--  />-->
 </template>
 
 <script>
@@ -104,13 +104,13 @@ import { useRoute } from 'vue-router'
 
 import Chart from '@/components/Chart'
 import Loading from '@/components/Loading'
-import UpdateModal from '@/components/UpdateModal'
+// import UpdateModal from '@/components/UpdateModal'
 
 export default {
   components: {
     Chart,
     Loading,
-    UpdateModal
+    // UpdateModal
   },
   emits: ['update-user'],
   setup(props, { emit }) {
@@ -283,13 +283,13 @@ export default {
       }
     }
 
-    const modalActive = ref(false)
+    // const modalActive = ref(false)
 
-    const updateUser = () => {
-      http
-        .post(`/users/${route.params.username}`, { dataType: 'text' })
-        .then(() => (modalActive.value = true))
-    }
+    // const updateUser = () => {
+    //   http
+    //     .post(`/users/${route.params.username}`, { dataType: 'text' })
+    //     .then(() => (modalActive.value = true))
+    // }
 
     watch(() => route.params, async newParams => fetchData(newParams))
 
@@ -303,8 +303,8 @@ export default {
       messages,
       model,
       lang: ref('user'),
-      modalActive,
-      updateUser
+      // modalActive,
+      // updateUser
     }
   }
 }
