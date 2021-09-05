@@ -35,7 +35,7 @@ module.exports = {
       config.performance.hints = false
     }
 
-    config.externals = function (context, request, callback) {
+    config.externals = function ({context, request}, callback) {
       if (/xlsx|canvg|pdfmake/.test(request)) {
         return callback(null, 'commonjs ' + request);
       }
