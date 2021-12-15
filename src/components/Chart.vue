@@ -37,7 +37,7 @@ const colorSet = new ColorSet()
 theme(colorSet)
 
 export default {
-  name: 'Chart',
+  name: 'HistoryChart',
   props: {
     list: {
       type: Array,

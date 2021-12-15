@@ -1,12 +1,11 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  darkMode: 'media',
   theme: {
     colors: {
       main: colors.fuchsia,
       white: colors.white,
-      gray: colors.warmGray
+      gray: colors.stone
     },
     extend: {
       opacity: {
@@ -27,14 +26,11 @@ module.exports = {
       }
     }
   },
-  variants: {
-    extend: {
-      ringWidth: ['hover'],
-      ringColor: ['hover']
-    }
-  },
   plugins: [
     require('@tailwindcss/forms')
   ],
-  purge: { content: ['./public/**/*.html', './src/**/*.vue'] }
+  content: [
+    './public/**/*.html',
+    './src/**/*.vue'
+  ]
 }
